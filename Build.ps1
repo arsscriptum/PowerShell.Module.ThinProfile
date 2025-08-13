@@ -569,6 +569,8 @@ function Get-FunctionDocUrl(`$Name){{
             Pop-Location
         }
 
+        popd
+
 
     }
 
