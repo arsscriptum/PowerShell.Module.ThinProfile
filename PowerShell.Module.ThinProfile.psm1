@@ -1,8 +1,8 @@
 <#
   ã--------------------------------------------------------------------------------------
   ¦   PowerShell PowerShell.Module.ThinProfile Module
-  ¦   Version 1.0.12
- , Generated on Wed, 13 Aug 2025 16:25:36 GMT 
+  ¦   Version 1.0.13
+ , Generated on Wed, 13 Aug 2025 16:30:02 GMT 
   ¦   Description: 
   ¦   Current Git Revision 9f4ece2e3a22be6d61f1a79bc93b974c4da7b7ad
   L--------------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ $ScriptBlockModuleUpdater = "H4sIAAAAAAAACs1YW2/bNhR+L9D/wAoeIqORctkFQ4YAS+OmSTs
 # ------------------------------------
 # Script file - ModuleVersion - 
 # ------------------------------------
-$ScriptBlockModuleVersion = "H4sIAAAAAAAACn1STU/DMAy9I+0/ZFUO7aEV486F8SEmhia2wWHaIWpdGkiTyXGH+Nh/J/3I1kkwnyzb7/k9J3mlU5JGszugeFFIPUOTSwVTk1UKngFt3fwenDEXq3GZKaArqTOpX8N5tdkYJDsvTKUyB0zB2mjdzm4EijJs8wY7qwtAgOFU6EyQwU92yXgulAUPagbth6S0WPMHQWCpbUSDszaRedg1ok5UHbynvNM8E1Q4/lO26pEex8TuURMjddzk/zEHqZKgiYxRNnlzyMArbFWycBgunMqOxXNHkb+ljxeUBPENokEWlI08pg0xqSVJoeQXZENXYLWAA09wTIJAFWrGHyulDp1dX9Jq26pf83GF6B/29IH6eH4tSHTzY6PJme+d7Ie5mttAt2jKuC7/tbl9uMPue7017xA/ueIUqDAZi5coWcDDZlvSTS5RRT3D3uwRW7Iwc8L6V7qvcmSeH/YFo+Q8GV10XJ5nb3b3C8a/T7MNAwAA"
+$ScriptBlockModuleVersion = "H4sIAAAAAAAACn1STU/DMAy9I+0/ZFUO7aEVE2cujA8xMTSxDQ7TDlHr0kCaTI47xMf+O+lHtk6C+WTZfs/vOckrnZI0mt0BxYtC6hmaXCqYmqxS8Axo6+b34Iy5WI3LTAFdSZ1J/RrOq83GINl5YSqVOWAK1kbrdnYjUJRhmzfYWV0AAgynQmeCDH6yS8ZzoSx4UDNoPySlxZo/CAJLbSManLWJzMOuEXWi6uA95Z3mmaDC8Z+yVY/0OCZ2j5oYqeMm/485SJUETWSMssmbQwZeYauShcNw4VR2LJ47ivwtfbygJIhvEA2yoGzkMW2ISS1JCiW/IBu6AqsFHHiCYxIEqlAz/lgpdejs+pJW21b9mo8rRP+wpw/Ux/NrQaKbHxtNznzvZD/M1dwGukVTxnX5r83twx123+uteYf4yRWnQIXJWLxEyQIeNtuSbnKJKuoZ9maP2JKFmRPWv9J9lSPz/LAvGCXnyeii4/I8e7O7X1EZUlQNAwAA"
 
 # ------------------------------------
 # Script file - NetDelayedTask - 
@@ -230,6 +230,7 @@ try {
     if ($null -ne $AutoUpdateCmd) {
         if ($PSBoundParameters.ContainsKey('StrLog1')) { Write-Host $StrLog1 -ForegroundColor DarkRed -NoNewline }
         Write-Host 'Detected function "Invoke-ThinProfileAutoUpdate" > attempting automatic module update' -ForegroundColor DarkYellow
+        Write-Host 'Detected function "Invoke-ThinProfileAutoUpdate" -> attempting automatic module update' -ForegroundColor DarkYellow
 
         try {
             & $AutoUpdateCmd -Import
