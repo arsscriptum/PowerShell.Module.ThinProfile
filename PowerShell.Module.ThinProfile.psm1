@@ -1,8 +1,8 @@
 <#
   ã--------------------------------------------------------------------------------------
   ¦   PowerShell PowerShell.Module.ThinProfile Module
-  ¦   Version 1.0.18
- , Generated on Wed, 13 Aug 2025 16:41:38 GMT 
+  ¦   Version 1.0.19
+ , Generated on Wed, 13 Aug 2025 16:54:06 GMT 
   ¦   Description: 
   ¦   Current Git Revision 33c84d657ffee0728fbb036b82f25064f7e69323
   L--------------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ $ScriptBlockModuleUpdater = "H4sIAAAAAAAACs1YW2/bNhR+L9D/wAoeIqORctkFQ4YAS+OmSTs
 # ------------------------------------
 # Script file - ModuleVersion - 
 # ------------------------------------
-$ScriptBlockModuleVersion = "H4sIAAAAAAAACn1STU/DMAy9I+0/ZFUO7aEVu3HhwvgQE0MT2+Aw7RC1Lg2kyeS4Q3zsv5N+ZOskmE+W7ff8npO80ilJo9kdULwopJ6hyaWCqckqBc+Atm5+D86Yi9W4zBTQldSZ1K/hvNpsDJKdF6ZSmQOmYG20bmc3AkUZtnmDndUFIMBwKnQmyOAnu2Q8F8qCBzWD9kNSWqz5gyCw1DaiwVmbyDzsGlEnqg7eU95pngkqHP8pW/VIj2Ni96iJkTpu8v+Yg1RJ0ETGKJu8OWTgFbYqWTgMF05lx+K5o8jf0scLSoL4BtEgC8pGHtOGmNSSpFDyC7KhK7BawIEnOCZBoAo144+VUofOri9ptW3Vr/m4QvQPe/pAfTy/FiS6+bHR5Mz3TvbDXM1toFs0ZVyX/9rcPtxh973emneIn1xxClSYjMVLlCzgYbMt6SaXqKKeYW/2iC1ZmDlh/SvdVzkyzw/7glFynowuOi7Psze7+wUV2SzzDQMAAA=="
+$ScriptBlockModuleVersion = "H4sIAAAAAAAACn1STU/DMAy9I+0/ZFUO7aEVO3LgwvgQE0MT2+Aw7RC1Lg2kyeS4Q3zsv5N+ZOskmE+W7ff8npO80ilJo9kdULwopJ6hyaWCqckqBc+Atm5+D86Yi9W4zBTQldSZ1K/hvNpsDJKdF6ZSmQOmYG20bmc3AkUZtnmDndUFIMBwKnQmyOAnu2Q8F8qCBzWD9kNSWqz5gyCw1DaiwVmbyDzsGlEnqg7eU95pngkqHP8pW/VIj2Ni96iJkTpu8v+Yg1RJ0ETGKJu8OWTgFbYqWTgMF05lx+K5o8jf0scLSoL4BtEgC8pGHtOGmNSSpFDyC7KhK7BawIEnOCZBoAo144+VUofOri9ptW3Vr/m4QvQPe/pAfTy/FiS6+bHR5Mz3TvbDXM1toFs0ZVyX/9rcPtxh973emneIn1xxClSYjMVLlCzgYbMt6SaXqKKeYW/2iC1ZmDlh/SvdVzkyzw/7glFynowuOi7Psze7+wWCfzEUDQMAAA=="
 
 # ------------------------------------
 # Script file - NetDelayedTask - 
@@ -209,6 +209,7 @@ if($AutoInitCmd -ne $Null){
     &$AutoInitCmd.Name
 }
 
+$NewCodeFailed = $False
 # Cross-process mutex to avoid concurrent updaters
 $mtx = $null
 $acquired = $false
@@ -216,12 +217,12 @@ try {
     if ($IsWindows) {
         $mtx = [System.Threading.Mutex]::new($false, 'Global\ThinProfileAutoUpdate')
         $acquired = $mtx.WaitOne([TimeSpan]::FromSeconds(5))
-        if (-not $acquired) { return }
+        if (-not $acquired) { throw "not aquired" }
     } else {
         # Non-Windows: named global mutexes aren’t supported; still guard within process
         $mtx = [System.Threading.Mutex]::new($false)
         $acquired = $mtx.WaitOne([TimeSpan]::FromSeconds(5))
-        if (-not $acquired) { return }
+        if (-not $acquired) { throw "not aquired" }
     }
 
     $AutoUpdateCommandName = 'Invoke-ThinProfileAutoUpdate'
@@ -236,16 +237,37 @@ try {
             & $AutoUpdateCmd -Import
         }
         catch {
-            Write-Verbose "[AutoUpdate] Updater threw: $($_.Exception.Message)"
-            # Optional: surface a warning, but don’t block module import
+            $NewCodeFailed = $True
+            Write-Host "[Error AutoUpdate] " -f DarkRed -n
+            Write-Host "[AutoUpdate] Updater threw: $($_.Exception.Message)" -ForegroundColor DarkYellow
         }
+    }else{
+        $NewCodeFailed = $True
+        Write-Host "[Error AutoUpdate] " -f DarkRed -n
+        Write-Host "Function $AutoUpdateCommandName NOT FOUND" -ForegroundColor DarkYellow
+
     }
+}catch{
+    $NewCodeFailed = $True
+    Write-Host "[Error AutoUpdate] " -f DarkRed -n
+    Write-Host "[AutoUpdate] Updater threw: $($_.Exception.Message)" -ForegroundColor DarkYellow
 }
 finally {
     if ($acquired -and $mtx) {
         try { $mtx.ReleaseMutex() | Out-Null } catch {}
         $mtx.Dispose()
     }
+}
+
+
+if($NewCodeFailed){
+  $AutoUpdateCommandName = "Invoke-ThinProfileAutoUpdate"
+  $AutoUpdateCmd = Get-Command -Name "$AutoUpdateCommandName" -ErrorAction Ignore
+  if($AutoUpdateCmd -ne $Null){
+    Write-Host "$StrLog1" -f DarkRed -n
+    Write-Host "Detected function"Invoke-ThinProfileAutoUpdate" -> attempting automatic module update" -f DarkYellow
+    &$AutoUpdateCmd.Name -Import
+  }
 }
 
 
