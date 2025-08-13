@@ -1,8 +1,8 @@
 <#
   ã--------------------------------------------------------------------------------------
   ¦   PowerShell PowerShell.Module.ThinProfile Module
-  ¦   Version 1.0.11
- , Generated on Wed, 13 Aug 2025 16:21:52 GMT 
+  ¦   Version 1.0.12
+ , Generated on Wed, 13 Aug 2025 16:25:36 GMT 
   ¦   Description: 
   ¦   Current Git Revision 9f4ece2e3a22be6d61f1a79bc93b974c4da7b7ad
   L--------------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ $ScriptBlockModuleUpdater = "H4sIAAAAAAAACs1YW2/bNhR+L9D/wAoeIqORctkFQ4YAS+OmSTs
 # ------------------------------------
 # Script file - ModuleVersion - 
 # ------------------------------------
-$ScriptBlockModuleVersion = "H4sIAAAAAAAACn1Sy27CMBC8I/EPJvIhOSQqH9BL6UNFpUIF2gPiYBGncet40XpD1Qf/XudhEqSWPa12d2Zn1s5KsyUFht1Jipe5MnOETGk5g7TU8lmirZrfwwFzsZ4UqZZ0pUyqzGu4KHc7QLKLHEqdOuBWWhttmtmdQFGETV5j51VBksRwJkwqCPCTXTKeCW2lB9WD9kPRNt/wB0HSUtOIhoMmUVnYNqJWVBW8p7zVPBeUO/5ztqqRHsfUHlFTUCau8/+Yg61W0hABaJu8OWTgFTYqWTgKl05ly+K5o8jf0scLKpLxDSIgC4paHjNATBlFSmj1JdORK7BKQMcTnJKgpBIN44+l1l3n0Je03jfqN3xSIvqHPX+gPp5fCxLt/AQMOfO9k/0wV3Mb6BahiKvyX5ubh+t235s9vMv4yRVnknJIWbxCxQIe1tuSdnKFOuoZ9mZP2JIlLAirX+m+yol53u0LxslFMh63XJ7naPbwCz5SGEENAwAA"
+$ScriptBlockModuleVersion = "H4sIAAAAAAAACn1STU/DMAy9I+0/ZFUO7aEV486F8SEmhia2wWHaIWpdGkiTyXGH+Nh/J/3I1kkwnyzb7/k9J3mlU5JGszugeFFIPUOTSwVTk1UKngFt3fwenDEXq3GZKaArqTOpX8N5tdkYJDsvTKUyB0zB2mjdzm4EijJs8wY7qwtAgOFU6EyQwU92yXgulAUPagbth6S0WPMHQWCpbUSDszaRedg1ok5UHbynvNM8E1Q4/lO26pEex8TuURMjddzk/zEHqZKgiYxRNnlzyMArbFWycBgunMqOxXNHkb+ljxeUBPENokEWlI08pg0xqSVJoeQXZENXYLWAA09wTIJAFWrGHyulDp1dX9Jq26pf83GF6B/29IH6eH4tSHTzY6PJme+d7Ie5mttAt2jKuC7/tbl9uMPue7017xA/ueIUqDAZi5coWcDDZlvSTS5RRT3D3uwRW7Iwc8L6V7qvcmSeH/YFo+Q8GV10XJ5nb3b3C8a/T7MNAwAA"
 
 # ------------------------------------
 # Script file - NetDelayedTask - 
@@ -201,8 +201,6 @@ $Script:LoadingState = $False
 
 $StrLog1 = "[PowerShell.Module.ThinProfile] "
 
-
-
 $AutoInitCommandName = "AutoInitialize-ThinProfileModule"
 $AutoInitCmd = Get-Command -Name "$AutoInitCommandName" -ErrorAction Ignore
 if($AutoInitCmd -ne $Null){
@@ -211,20 +209,44 @@ if($AutoInitCmd -ne $Null){
     &$AutoInitCmd.Name
 }
 
-$mtx = [Threading.Mutex]::new($false, "Global\ThinProfileAutoUpdate")
+# Cross-process mutex to avoid concurrent updaters
+$mtx = $null
+$acquired = $false
 try {
-    if (-not $mtx.WaitOne([TimeSpan]::FromSeconds(30))) { return }
-    $AutoUpdateCommandName = "Invoke-ThinProfileAutoUpdate"
-    $AutoUpdateCmd = Get-Command -Name "$AutoUpdateCommandName" -ErrorAction Ignore
-    if($AutoUpdateCmd -ne $Null){
-        Write-Host "$StrLog1" -f DarkRed -n
-        Write-Host "Detected function"Invoke-ThinProfileAutoUpdate" -> attempting automatic module update" -f DarkYellow
-        &$AutoUpdateCmd.Name -Import
+    if ($IsWindows) {
+        $mtx = [System.Threading.Mutex]::new($false, 'Global\ThinProfileAutoUpdate')
+        $acquired = $mtx.WaitOne([TimeSpan]::FromSeconds(5))
+        if (-not $acquired) { return }
+    } else {
+        # Non-Windows: named global mutexes aren’t supported; still guard within process
+        $mtx = [System.Threading.Mutex]::new($false)
+        $acquired = $mtx.WaitOne([TimeSpan]::FromSeconds(5))
+        if (-not $acquired) { return }
     }
-} finally {
-    $mtx.ReleaseMutex() | Out-Null
-    $mtx.Dispose()
+
+    $AutoUpdateCommandName = 'Invoke-ThinProfileAutoUpdate'
+    $AutoUpdateCmd = Get-Command -Name $AutoUpdateCommandName -ErrorAction Ignore
+
+    if ($null -ne $AutoUpdateCmd) {
+        if ($PSBoundParameters.ContainsKey('StrLog1')) { Write-Host $StrLog1 -ForegroundColor DarkRed -NoNewline }
+        Write-Host 'Detected function "Invoke-ThinProfileAutoUpdate" > attempting automatic module update' -ForegroundColor DarkYellow
+
+        try {
+            & $AutoUpdateCmd -Import
+        }
+        catch {
+            Write-Verbose "[AutoUpdate] Updater threw: $($_.Exception.Message)"
+            # Optional: surface a warning, but don’t block module import
+        }
+    }
 }
+finally {
+    if ($acquired -and $mtx) {
+        try { $mtx.ReleaseMutex() | Out-Null } catch {}
+        $mtx.Dispose()
+    }
+}
+
 
 $ModuleVersionCommandName = "Get-ThinProfileModuleVersion"
 $GetModVersionCmd = Get-Command -Name "$ModuleVersionCommandName" -ErrorAction Ignore
