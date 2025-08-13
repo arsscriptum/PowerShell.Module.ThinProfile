@@ -80,7 +80,7 @@ $Script:DocumentationBuildFile = Join-Path "$ENV:Temp" "BuildDoc.ps1"
 $Script:TemplateFilePath = Join-Path $Script:TplPath 'ModuleVersion.tpl'
 $Script:OutputFilePath = Join-Path $Script:SourcePath 'ModuleVersion.ps1'
 $Script:VersionFileTmpPath = Join-Path "$ENV:Temp" 'Version.tmp'
-$Script:DeployTargetPath = (Resolve-Path "$Script:RootPath\..\CTLive").Path
+$Script:DeployTargetPath = (Resolve-Path "$Script:RootPath\..\PowerShell.Module.ThinProfile.Live").Path
 
 
 
@@ -559,7 +559,7 @@ function Get-FunctionDocUrl(`$Name){{
         Write-Host "Original Manifest Version : $psd1VersionBefore" -f Blue
         Write-Host "Updated  Manifest Version : $psd1VersionAfter" -f Blue
 
-        # Run gpush in ../CTLive
+        # Run gpush in ../PowerShell.Module.ThinProfile.Live
         Push-Location $Script:DeployTargetPath
         try {
             Write-Host "Running gpush in $Script:DeployTargetPath..." -f Blue
