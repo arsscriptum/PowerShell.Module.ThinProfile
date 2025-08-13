@@ -1,8 +1,8 @@
 <#
   ã--------------------------------------------------------------------------------------
   ¦   PowerShell PowerShell.Module.ThinProfile Module
-  ¦   Version 1.0.9
- , Generated on Wed, 13 Aug 2025 15:39:23 GMT 
+  ¦   Version 1.0.11
+ , Generated on Wed, 13 Aug 2025 16:21:52 GMT 
   ¦   Description: 
   ¦   Current Git Revision 9f4ece2e3a22be6d61f1a79bc93b974c4da7b7ad
   L--------------------------------------------------------------------------------------
@@ -52,12 +52,12 @@ $ScriptBlockModulesPathFunctions = "H4sIAAAAAAAACo3UUU/CMBSG4XsT/8NCvCUBvRGJJkQN
 # ------------------------------------
 # Script file - ModuleUpdater - 
 # ------------------------------------
-$ScriptBlockModuleUpdater = "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"
+$ScriptBlockModuleUpdater = "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"
 
 # ------------------------------------
 # Script file - ModuleVersion - 
 # ------------------------------------
-$ScriptBlockModuleVersion = "H4sIAAAAAAAACn1STU/DMAy9T9p/yKoc2kMrOHLgwvgQE0MT2+Aw7RCtKQ2k8eS4Q3zsv5N+ZO0kmE+W7ff8npOsNBtSYNidpHiRKzNDyJSWU0hLLZ8l2qr5PRwwF6txkWpJV8qkyryG83K7BSQ7z6HUqQNupLXRupndChRF2OQ1dlYVJEkMp8KkggA/2SXjmdBWelA9aD8UbfI1fxAkLTWNaDhoEpWFbSNqRVXBe8pbzTNBueM/Zasa6XFM7AE1AWXiOv+POdhoJQ0RgLbJm0MGXmGjkoWjcOFUtiyeO4r8LX28oCIZ3yACsqCo5TEDxJRRpIRWXzIduQKrBHQ8wTEJSirRMP5Yat119n1Jq12jfs3HJaJ/2NMH6uP5tSDRzo/BkDPfO9kPczW3gW4Rirgq/7W5ebhu973ZwbuMn1xxKimHlMVLVCzgYb0taSeXqKOeYW/2iC1ZwJyw+pXuqxyZ592+4Dw5Sy5aKk9z8Lr/BaXYGEEMAwAA"
+$ScriptBlockModuleVersion = "H4sIAAAAAAAACn1Sy27CMBC8I/EPJvIhOSQqH9BL6UNFpUIF2gPiYBGncet40XpD1Qf/XudhEqSWPa12d2Zn1s5KsyUFht1Jipe5MnOETGk5g7TU8lmirZrfwwFzsZ4UqZZ0pUyqzGu4KHc7QLKLHEqdOuBWWhttmtmdQFGETV5j51VBksRwJkwqCPCTXTKeCW2lB9WD9kPRNt/wB0HSUtOIhoMmUVnYNqJWVBW8p7zVPBeUO/5ztqqRHsfUHlFTUCau8/+Yg61W0hABaJu8OWTgFTYqWTgKl05ly+K5o8jf0scLKpLxDSIgC4paHjNATBlFSmj1JdORK7BKQMcTnJKgpBIN44+l1l3n0Je03jfqN3xSIvqHPX+gPp5fCxLt/AQMOfO9k/0wV3Mb6BahiKvyX5ubh+t235s9vMv4yRVnknJIWbxCxQIe1tuSdnKFOuoZ9mZP2JIlLAirX+m+yol53u0LxslFMh63XJ7naPbwCz5SGEENAwAA"
 
 # ------------------------------------
 # Script file - NetDelayedTask - 
@@ -211,12 +211,19 @@ if($AutoInitCmd -ne $Null){
     &$AutoInitCmd.Name
 }
 
-$AutoUpdateCommandName = "Invoke-ThinProfileAutoUpdate"
-$AutoUpdateCmd = Get-Command -Name "$AutoUpdateCommandName" -ErrorAction Ignore
-if($AutoUpdateCmd -ne $Null){
-    Write-Host "$StrLog1" -f DarkRed -n
-    Write-Host "Detected function"Invoke-ThinProfileAutoUpdate" -> attempting automatic module update" -f DarkYellow
-    &$AutoUpdateCmd.Name -Import
+$mtx = [Threading.Mutex]::new($false, "Global\ThinProfileAutoUpdate")
+try {
+    if (-not $mtx.WaitOne([TimeSpan]::FromSeconds(30))) { return }
+    $AutoUpdateCommandName = "Invoke-ThinProfileAutoUpdate"
+    $AutoUpdateCmd = Get-Command -Name "$AutoUpdateCommandName" -ErrorAction Ignore
+    if($AutoUpdateCmd -ne $Null){
+        Write-Host "$StrLog1" -f DarkRed -n
+        Write-Host "Detected function"Invoke-ThinProfileAutoUpdate" -> attempting automatic module update" -f DarkYellow
+        &$AutoUpdateCmd.Name -Import
+    }
+} finally {
+    $mtx.ReleaseMutex() | Out-Null
+    $mtx.Dispose()
 }
 
 $ModuleVersionCommandName = "Get-ThinProfileModuleVersion"

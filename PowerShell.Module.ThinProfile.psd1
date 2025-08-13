@@ -1,7 +1,7 @@
 #̷\  ===================================================================
 #̷\  PowerShell Module -- PowerShell.Module.ThinProfile
 #̷\  
-#̷\  Manifest File Generated on Wed, 13 Aug 2025 15:39:23 GMT
+#̷\  Manifest File Generated on Wed, 13 Aug 2025 16:21:52 GMT
 #̷\  Current Git Revision 9f4ece2e3a22be6d61f1a79bc93b974c4da7b7ad
 #̷\  ===================================================================
 
@@ -11,10 +11,10 @@
 
     RootModule        =  'PowerShell.Module.ThinProfile.psm1'
 
-    ModuleVersion     = '1.0.9
+    ModuleVersion     = '1.0.11
 '
 
-    GUID              = '0910103d-e231-478c-8199-27c9da44fba9'
+    GUID              = 'ad99c87b-570d-47d5-8b2d-e6f6fb7c0358'
 
     CompanyName       = 'Unknown'
 
@@ -128,9 +128,8 @@
 		"Push-ModWorkflowTools",
 		"Push-ModProfileUtils",
 		"Push-ModTools",
-		"Push-ModOpenAI",
 		"Push-ModNtRights",
-		"Push-ModMiniPc",
+		"Push-ModOpenAI",
 		"Push-ModManageMini",
 		"Push-ModGithub",
 		"Push-ModExpressVPN",
@@ -142,79 +141,82 @@
 		"Push-ModAssert",
 		"Push-Mod1190",
 		"Push-Mod1138",
+		"Push-ModMiniPc",
 
 		# --- Exported Functions from ModuleUpdater.ps1 ---
+		"New-ThinProfileModuleVersionFile",
 		"Invoke-ThinProfileAutoUpdate",
 		"Get-ThinProfileAutoUpdateOverride",
 		"Set-ThinProfileAutoUpdateOverride",
-		"New-ThinProfileModuleVersionFile",
+		"Test-FileHashMatch",
 		"Get-ThinProfileModuleVersionPath",
+		"Get-RemoteText",
 
 		# --- Exported Functions from ModuleVersion.ps1 ---
 		"Get-ThinProfileModuleVersion",
 
 		# --- Exported Functions from NetDelayedTask.ps1 ---
+		"Start-QueuedCommandProcessor",
 		"New-DelayedScheduledTask",
 		"New-EncodedScheduledTask",
 		"Read-QueuedCommandLogs",
 		"Open-QueuedCommandLogs",
 		"Stop-QueuedCommandProcessor",
-		"Start-QueuedCommandProcessor",
 		"Invoke-ProcessQueuedCommands",
 
 		# --- Exported Functions from OpenPage.ps1 ---
 		"Stop-OpenPageTask",
-		"Invoke-OpenPageDesjardins",
 		"Invoke-OpenPageSecurityAdvisory",
-		"Open-CustomPage",
 		"Stop-PowerShellProcesses",
+		"Open-CustomPage",
+		"Invoke-OpenPageDesjardins",
 		"Stop-PidFromTempFile",
+		"Read-OpenCustomPageLogFile",
 		"Save-CurrentPidToTempFile",
 		"New-OpenPageTask",
-		"Read-OpenCustomPageLogFile",
 
 		# --- Exported Functions from Robocopy.ps1 ---
-		"Write-RoboLog",
-		"Add-RobocopyPrivileges",
-		"Remove-RobocopyPrivileges",
-		"Invoke-Robocopy",
-		"Invoke-UserHomeClone",
 		"Grant-DirectoryPermission",
+		"Invoke-UserHomeClone",
+		"Invoke-Robocopy",
 		"ConvertFrom-AclDirectorySec",
+		"Add-RobocopyPrivileges",
+		"Write-RoboLog",
+		"Remove-RobocopyPrivileges",
 
 		# --- Exported Functions from ScheduledTaskDetails.ps1 ---
 		"Archive",
-		"Remove-SchedTasks",
 		"Get-ScheduledTaskDetails",
 		"Test-SerializableProperty",
 		"Unregister-AllSchedTasks",
 		"Convert-SchedTaskStateValueToString",
 		"ConvertFrom-CimType",
 		"Show-SchedTasksDebugInfo",
-		"Clear-SchedTasks",
+		"Remove-SchedTasks",
+		"Get-SchedTasks",
 		"Add-SchedTasks",
 		"Read-SchedTaskProperties",
 		"Write-SchedTaskProperties",
 		"Remove-SchedTaskProperties",
 		"Set-EventChannelEnable",
 		"Get-ScheduledTaskRunHistory",
-		"Get-SchedTasks",
+		"Clear-SchedTasks",
 
 		# --- Exported Functions from ShowSydneyMsgBox.ps1 ---
-		"Show-Sydney",
-		"Show-MessageBoxVideoSydney",
 		"ConvertFrom-Base64CompressedScriptBlock",
+		"Show-MessageBoxVideoSydney",
+		"Show-Sydney",
 
 		# --- Exported Functions from WinNotification.ps1 ---
+		"Invoke-StopNotify",
 		"Read-TaskNotifyLogFile",
 		"Invoke-StartNotify",
 		"Show-LowMemoryNotificationFR",
-		"Invoke-StopNotify",
 
 		# --- Exported Functions from WinUpdateNotify.ps1 ---
+		"Invoke-WinUpdateTask",
 		"Show-LocalWinUpdateNotification",
 		"Get-XamlUiContent",
-		"Invoke-WinUpdateTask",
 		"Show-LowMemoryNotificationFR")
 	
 
