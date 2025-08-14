@@ -1,7 +1,7 @@
 #̷\  ===================================================================
 #̷\  PowerShell Module -- PowerShell.Module.ThinProfile
 #̷\  
-#̷\  Manifest File Generated on Wed, 13 Aug 2025 22:31:51 GMT
+#̷\  Manifest File Generated on Wed, 13 Aug 2025 22:34:52 GMT
 #̷\  Current Git Revision 33c84d657ffee0728fbb036b82f25064f7e69323
 #̷\  ===================================================================
 
@@ -11,10 +11,10 @@
 
     RootModule        =  'PowerShell.Module.ThinProfile.psm1'
 
-    ModuleVersion     = '1.0.40
+    ModuleVersion     = '1.0.41
 '
 
-    GUID              = '4c1e85b3-c3dc-41bf-abf9-1fc7b9e812ec'
+    GUID              = '8b187abf-9281-41a7-a3d1-8124160f76de'
 
     CompanyName       = 'Unknown'
 
