@@ -32,7 +32,7 @@ function Get-ThinProfileModuleVersion {
         return $LatestVersion.ToString()
     }
 
-    $Version = "1.0.41"
+    $Version = "1.0.44"
     return $Version
 }
 

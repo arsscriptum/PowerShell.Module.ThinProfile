@@ -526,10 +526,15 @@ function Get-FunctionDocUrl(`$Name){{
 
         $srcpsd1path = Join-Path $Script:OutPath "PowerShell.Module.ThinProfile.psd1"
         $srcpsm1path = Join-Path $Script:OutPath "PowerShell.Module.ThinProfile.psm1"
+        $srcpsd1Hashpath = Join-Path $Script:OutPath "PowerShell.Module.ThinProfile.psd1.sha256"
+        $srcpsm1Hashpath = Join-Path $Script:OutPath "PowerShell.Module.ThinProfile.psm1.sha256"
 
 
         $dstpsd1path = Join-Path $Script:DeployTargetPath "PowerShell.Module.ThinProfile.psd1"
         $dstpsm1path = Join-Path $Script:DeployTargetPath "PowerShell.Module.ThinProfile.psm1"
+
+        $dstpsd1Hashpath = Join-Path $Script:DeployTargetPath "PowerShell.Module.ThinProfile.psd1.sha256"
+        $dstpsm1Hashpath = Join-Path $Script:DeployTargetPath "PowerShell.Module.ThinProfile.psm1.sha256"
 
         $psd1VersionBefore = get-content $dstpsd1path | Select-String "ModuleVersion " -Raw
         if ([string]::IsNullOrEmpty($psd1VersionBefore)) {
@@ -546,8 +551,10 @@ function Get-FunctionDocUrl(`$Name){{
 
         Write-Host "Updating Module File : $dstpsm1path" -f Blue
         Copy-Item -Path "$srcpsm1path" -Destination "$dstpsm1path" -Force
+        Copy-Item -Path "$srcpsm1Hashpath" -Destination "$dstpsm1Hashpath" -Force
         Write-Host "Updating Manifest File : $dstpsd1path" -f Blue
         Copy-Item -Path "$srcpsd1path" -Destination "$dstpsd1path" -Force
+        Copy-Item -Path "$srcpsd1Hashpath" -Destination "$dstpsd1Hashpath" -Force
 
         $psd1VersionAfter = get-content $dstpsd1path | Select-String "ModuleVersion " -Raw
         if ([string]::IsNullOrEmpty($psd1VersionAfter)) {

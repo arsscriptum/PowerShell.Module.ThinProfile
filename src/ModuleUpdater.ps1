@@ -188,12 +188,19 @@ function Invoke-ThinProfileAutoUpdate {
 
         $psd1 = Join-Path $target "$($data.ModuleName).psd1"
         $psm1 = Join-Path $target "$($data.ModuleName).psm1"
+        
+        $psd1hash = Join-Path $target "$($data.ModuleName).psd1.sha256"
+        $psm1hash = Join-Path $target "$($data.ModuleName).psm1.sha256"
 
         $tmp1 = Join-Path $env:TEMP ([IO.Path]::GetRandomFileName())
         $tmp2 = Join-Path $env:TEMP ([IO.Path]::GetRandomFileName())
 
         $urlPsd1 = "$($data.UpdateUrl)/$($data.ModuleName).psd1"
         $urlPsm1 = "$($data.UpdateUrl)/$($data.ModuleName).psm1"
+
+        $urlPsd1Hash = "$($data.UpdateUrl)/$($data.ModuleName).psd1.sha256"
+        $urlPsm1Hash = "$($data.UpdateUrl)/$($data.ModuleName).psm1.sha256"
+
         Write-Verbose "psm1 ($psm1)"
         Write-Verbose "psd1 ($psd1)"
         Write-Verbose "urlPsm1 ($urlPsm1)"
@@ -201,6 +208,7 @@ function Invoke-ThinProfileAutoUpdate {
 
         try {
             Invoke-WebRequest $urlPsm1 -OutFile $tmp2 -UseBasicParsing -TimeoutSec 20 -ErrorAction Stop
+            Invoke-WebRequest $urlPsm1Hash -OutFile $psm1hash -UseBasicParsing -TimeoutSec 20 -ErrorAction Stop
         } catch {
             Write-Host "Failed to get data file from `"$urlPsm1`" -> $tmp2" -f DarkRed
             throw "Failed to get data file from `"$urlPsm1`" -> $tmp2`n$_"
@@ -208,6 +216,7 @@ function Invoke-ThinProfileAutoUpdate {
 
         try {
             Invoke-WebRequest $urlPsd1 -OutFile $tmp1 -UseBasicParsing -TimeoutSec 20 -ErrorAction Stop
+            Invoke-WebRequest $urlPsd1Hash -OutFile $psd1hash -UseBasicParsing -TimeoutSec 20 -ErrorAction Stop
         } catch {
             Write-Host "Failed to get data file from `"$urlPsd1`" -> $tmp1" -f DarkRed
             throw "Failed to get data file from `"$urlPsd1`" -> $tmp1`n$_"
