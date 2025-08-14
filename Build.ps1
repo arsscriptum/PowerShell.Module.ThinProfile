@@ -404,10 +404,9 @@ try {
 
 
         $Content_01 = @"
-
 function Get-FunctionDocUrl(`$Name){{
     `$Url = `"https://github.com/arsscriptum/PowerShell.Module.ThinProfile/blob/master/doc/{{0}}.md`" -f `$Name
-    [string]`$res = `"`t- [{{0}}]({{1}})``n`" -f `$Name, `$Url
+    [string]`$res = `" - [{{0}}]({{1}})``n`" -f `$Name, `$Url
     `$res
 }}
 
