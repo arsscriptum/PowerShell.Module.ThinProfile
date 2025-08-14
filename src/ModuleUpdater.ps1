@@ -226,22 +226,22 @@ function Invoke-ThinProfileAutoUpdate {
         
         if ($TestFileHashMatch) {
             $ChecksumUrl = "{0}/{1}.psm1.sha256" -f "$($Data.UpdateUrl)","$($Data.ModuleName)"
-            $psm1HackCheck = Test-FileHashMatch $ChecksumUrl $psm1tmp
+            $psm1HackCheck = Test-FileHashMatch $tmp2 $ChecksumUrl 
             if (-not ($psm1HackCheck)) {
                 throw "Hash mismatch for PSM1."
             }
-            Write-Host "✅ psm1 File Hash $psm1tmp is GOOD"
+            Write-Host "✅ psm1 File Hash $tmp2 is GOOD"
 
             $ChecksumUrl = "{0}/{1}.psd1.sha256" -f "$($Data.UpdateUrl)","$($Data.ModuleName)"
-            $psd1HackCheck = Test-FileHashMatch $ChecksumUrl $psd1tmp
+            $psd1HackCheck = Test-FileHashMatch $tmp1 $ChecksumUrl 
             if (-not ($ChecksumUrl)) {
                 throw "Hash mismatch for PSD1."
             }
-            Write-Host "✅ psd1 File Hash $psm1tmp is GOOD"
+            Write-Host "✅ psd1 File Hash $tmp1 is GOOD"
 
             # (Optional) signature
             if ($TestFileHashMatchSignature) {
-                $sig = Get-AuthenticodeSignature -FilePath "$psm1tmp" -ErrorAction Ignore
+                $sig = Get-AuthenticodeSignature -FilePath "$tmp2" -ErrorAction Ignore
                 if ( ($sig -eq $Null) -Or ($sig.Status -ne 'Valid') ) { throw "Invalid signature on PSM1: $($sig.Status)" }
 
                 $man = Test-ModuleManifest -Path $tmp1
