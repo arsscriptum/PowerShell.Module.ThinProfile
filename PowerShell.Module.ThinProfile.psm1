@@ -1,8 +1,8 @@
 <#
   ã--------------------------------------------------------------------------------------
   ¦   PowerShell PowerShell.Module.ThinProfile Module
-  ¦   Version 1.0.57
- , Generated on Wed, 13 Aug 2025 23:41:17 GMT 
+  ¦   Version 1.0.58
+ , Generated on Wed, 13 Aug 2025 23:49:19 GMT 
   ¦   Description: 
   ¦   Current Git Revision dd5a67a01372d717991cfdb88fb85df08da580f7
   L--------------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ $ScriptBlockModuleUpdater = "H4sIAAAAAAAACs1Z3W7bOBa+L9B3YAUvLKOWEnd2F4ssstg0bpp
 # ------------------------------------
 # Script file - ModuleVersion - 
 # ------------------------------------
-$ScriptBlockModuleVersion = "H4sIAAAAAAAACn1STU/DMAy9I+0/ZFUO7aEVHBAnLowPMTE0sQ0O0w7R6tJAmkyOO8TH/jvpR9ZOgvlk2X7P7znJSr0maTS7A4rnudRTNJlUMDFpqeAZ0FbN78EJc7EcFakCupI6lfo1nJWbjUGys9yUKnXANVgbrZrZjUBRhE1eY6dVAQgwnAidCjL4yS4Zz4Sy4EH1oP2QtM5X/EEQWGoa0eCkSWQWto2oFVUF7ylvNU8F5Y7/mK1qpMcxtnvU2Egd1/l/zMFaSdBExiibvDlk4BU2Klk4DOdOZcviuaPI39LHC0qC+AbRIAuKWh7ThpjUkqRQ8gvSoSuwSkDHExySIFCJmvHHUqmus+tLWm4b9Ss+KhH9wx4/UB/PrwWJdn5kNDnzvZP9MFdzG+gWTRFX5b82Nw/X7b7XW/MO8ZMrToByk7J4gZIFPKy3Je3kAlXUM+zNHrAlczMjrH6l+yoH5nm3LzhLTpPzi5bL8+zN7n4ByuSHHw0DAAA="
+$ScriptBlockModuleVersion = "H4sIAAAAAAAACn1STU/DMAy9I+0/ZFUO7aEVHJC4cGF8iImhiW1wmHaIVpcG0mRy3CE+9t9JP7J2Eswny/Z7fs9JVuo1SaPZHVA8z6WeosmkgolJSwXPgLZqfg9OmIvlqEgV0JXUqdSv4azcbAySneWmVKkDrsHaaNXMbgSKImzyGjutCkCA4UToVJDBT3bJeCaUBQ+qB+2HpHW+4g+CwFLTiAYnTSKzsG1EragqeE95q3kqKHf8x2xVIz2Osd2jxkbquM7/Yw7WSoImMkbZ5M0hA6+wUcnCYTh3KlsWzx1F/pY+XlASxDeIBllQ1PKYNsSkliSFkl+QDl2BVQI6nuCQBIFK1Iw/lkp1nV1f0nLbqF/xUYnoH/b4gfp4fi1ItPMjo8mZ753sh7ma20C3aIq4Kv+1uXm4bve93pp3iJ9ccQKUm5TFC5Qs4GG9LWknF6iinmFv9oAtmZsZYfUr3Vc5MM+7fcFZcpqcX7RcnmdvdvcLULJtkg0DAAA="
 
 # ------------------------------------
 # Script file - NetDelayedTask - 
