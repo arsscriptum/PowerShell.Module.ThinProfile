@@ -1,4 +1,4 @@
-#╔════════════════════════════════════════════════════════════════════════════════╗
+﻿#╔════════════════════════════════════════════════════════════════════════════════╗
 #║                                                                                ║
 #║   MsgBox.ps1                                                                   ║
 #║                                                                                ║
@@ -155,11 +155,11 @@ function Show-Popup {
 
 function Show-SimpleMessageBox {
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param
     ([Parameter(Mandatory = $True, Position = 0)] [Object]$Content,
-        [Parameter(Mandatory = $false, Position = 1)] [string]$Title,
-        [Parameter(Mandatory = $false, Position = 2)][ValidateSet('OK', 'OK-Cancel', 'Abort-Retry-Ignore', 'Yes-No-Cancel', 'Yes-No', 'Retry-Cancel', 'Cancel-Continue', 'Cancel-TryAgain-Continue', 'None')] [array]$ButtonType = 'OK',
+        [Parameter(Mandatory = $False)] [string]$Title,
+        [Parameter(Mandatory = $false, Position = 2)][ValidateSet('OK', 'OK-Cancel', 'Abort-Retry-Ignore', 'Yes-No-Cancel', 'Play-No-Explorer', 'Yes-No', 'Retry-Cancel', 'Cancel-Continue', 'Cancel-TryAgain-Continue', 'None')] [array]$ButtonType = 'OK',
         [Parameter(Mandatory = $false, Position = 3)] [array]$CustomButtons,
         [Parameter(Mandatory = $false, Position = 4)] [int]$ContentFontSize = 14,
         [Parameter(Mandatory = $false, Position = 5)] [int]$TitleFontSize = 14,
@@ -269,7 +269,7 @@ function Show-SimpleMessageBox {
 }
 
 function Test-SimpleMsgBox {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param
     (
         [Parameter(Mandatory = $false)] [int]$ContentFontSize = 14,
@@ -297,7 +297,7 @@ function Test-SimpleMsgBox {
     Invoke-Command -ScriptBlock $sb
 }
 function Test-SimpleMsgBox2 {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param
     (
         [Parameter(Mandatory = $True, Position = 0)] [string]$Title,
@@ -342,7 +342,7 @@ function Show-MessageBox {
 
         # The buttons to add
         [Parameter(Mandatory = $false)]
-        [ValidateSet('OK', 'OK-Cancel', 'Abort-Retry-Ignore', 'Yes-No-Cancel', 'Yes-No', 'Retry-Cancel', 'Cancel-Continue', 'Cancel-TryAgain-Continue', 'None')]
+        [ValidateSet('OK', 'OK-Cancel', 'Abort-Retry-Ignore', 'Play-No-Explorer', 'Yes-No-Cancel', 'Yes-No', 'Retry-Cancel', 'Cancel-Continue', 'Cancel-TryAgain-Continue', 'None')]
         [array]$ButtonType = 'OK',
 
         # The buttons to add
@@ -686,6 +686,13 @@ Height="Auto" MaxWidth="400" MinWidth="350" Padding="10">$Content</TextBlock>
             Add-Button -Content "Cancel"
         }
 
+        if ($ButtonType -eq "Play-No-Explorer")
+        {
+            Add-Button -Content "Yes, play it!"
+            Add-Button -Content "No, close"
+            Add-Button -Content "Open Explorer"
+        }
+
         if ($ButtonType -eq "Yes-No")
         {
             Add-Button -Content "Yes"
@@ -870,7 +877,7 @@ function Show-MessageBoxException {
     .PARAMETER Text
     String to display
 #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
         [Parameter(Mandatory = $True, Position = 0)]
         [string]$ErrorString,
@@ -962,9 +969,9 @@ function Show-MessageBoxVoice {
     .PARAMETER Text
     String to display
 #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
-        [Parameter(Mandatory = $True, Position = 0, ValueFromPipeline = $True)][AllowEmptyString()] $Text
+        [Parameter(Mandatory = $True, Position = 0)][AllowEmptyString()] $Text
     )
     $Content = $Text
 
@@ -1004,7 +1011,7 @@ function Show-MessageBoxError {
     .PARAMETER Text
     String to display
 #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
         [Parameter(Mandatory = $True, Position = 0)]
         [string]$Text,
@@ -1035,9 +1042,9 @@ function Show-BeAdvisedSydney {
     .PARAMETER Text
     String to display
 #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
-        [Parameter(Mandatory = $True, Position = 0, ValueFromPipeline = $True)][AllowEmptyString()] $Text
+        [Parameter(Mandatory = $True, Position = 0)][AllowEmptyString()] $Text
     )
     $Content = $Text
 
@@ -1076,10 +1083,10 @@ function Show-MessageBoxInfo {
     .PARAMETER Text
     String to display
 #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
-        [Parameter(Mandatory = $True, Position = 0, ValueFromPipeline = $True)][AllowEmptyString()] $Text,
-        [Parameter(Mandatory = $false, Position = 1, ValueFromPipeline = $True)][AllowEmptyString()] $Title = 'Info'
+        [Parameter(Mandatory = $True, Position = 0)][AllowEmptyString()] $Text,
+        [Parameter(Mandatory = $False)][AllowEmptyString()] $Title = 'Info'
 
     )
 
@@ -1104,9 +1111,9 @@ function Show-MessageBoxStandby {
     .PARAMETER Text
     String to display
 #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
-        [Parameter(Mandatory = $false, Position = 0, ValueFromPipeline = $True)][AllowEmptyString()] $Title = 'STAND BY'
+        [Parameter(Mandatory = $False)][AllowEmptyString()] $Title = 'STAND BY'
 
     )
     Register-ScriptAssemblies
@@ -1140,11 +1147,11 @@ function Show-MessageBoxRestart {
     .PARAMETER Text
     String to display
 #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
-        [Parameter(Mandatory = $True, Position = 0, ValueFromPipeline = $True)]
+        [Parameter(Mandatory = $True, Position = 0)]
         [string]$Text,
-        [Parameter(Mandatory = $False, Position = 1, ValueFromPipeline = $True)]
+        [Parameter(Mandatory = $False)]
         [string]$Title = "Computer Restart Requested"
     )
     $Content = $Text
@@ -1177,12 +1184,12 @@ function Show-MessageBoxVideoUrl {
     .PARAMETER Text
     String to display
 #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
-        [Parameter(Mandatory = $False, Position = 0, ValueFromPipeline = $True)]
+        [Parameter(Mandatory = $False)]
         [ValidateNotNullOrEmpty()]
         [string]$Url,
-        [Parameter(Mandatory = $False, Position = 1, ValueFromPipeline = $True)]
+        [Parameter(Mandatory = $False)]
         [ValidateNotNullOrEmpty()]
         [string]$Title
     )
@@ -1202,7 +1209,7 @@ function Show-MessageBoxVideoUrl {
 function Show-MessageBoxVideoSydney {
     [CmdletBinding(SupportsShouldProcess)]
     param(
-        [Parameter(Mandatory = $False, Position = 0, ValueFromPipeline = $True)]
+        [Parameter(Mandatory = $False)]
         [ValidateNotNullOrEmpty()]
         [string]$Title
     )
@@ -1228,12 +1235,12 @@ function Show-MessageBoxVideoUrlExtended {
     .PARAMETER Text
     String to display
 #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
-        [Parameter(Mandatory = $False, Position = 0, ValueFromPipeline = $True)]
+        [Parameter(Mandatory = $False)]
         [ValidateNotNullOrEmpty()]
         [string]$Url,
-        [Parameter(Mandatory = $False, Position = 1, ValueFromPipeline = $True)]
+        [Parameter(Mandatory = $False)]
         [ValidateNotNullOrEmpty()]
         [string]$Title
     )
@@ -1326,11 +1333,11 @@ function Show-MessageBoxScriptError {
     .PARAMETER Text
     String to display
 #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
-        [Parameter(Mandatory = $True, Position = 0, ValueFromPipeline = $True)]
+        [Parameter(Mandatory = $True, Position = 0)]
         [string]$Text,
-        [Parameter(Mandatory = $False, Position = 1, ValueFromPipeline = $True)]
+        [Parameter(Mandatory = $False)]
         [string]$Title = ":("
     )
     $Params = @{
@@ -1350,6 +1357,176 @@ function Show-MessageBoxScriptError {
 
 }
 
+function Show-Minimalisticplayer {
+    [CmdletBinding(SupportsShouldProcess)]
+    param(
+        [Parameter(Mandatory = $True, Position = 0)]
+        [ValidateNotNullOrEmpty()]
+        [string]$Path,
+        [Parameter(Mandatory = $False)]
+        [string]$Title = "Video Player",
+        [Parameter(Mandatory = $False)]
+        [uint32]$Height = 450,
+        [Parameter(Mandatory = $False)]
+        [uint32]$Width = 800
+    )
+    Add-Type -AssemblyName PresentationFramework
+    Add-Type -AssemblyName PresentationCore
+    Add-Type -AssemblyName WindowsBase
+
+    $Script:TmpFile = Join-Path "$ENV:Temp" "tmpfsndd5.tmp"
+    New-Item -Path "$Script:TmpFile" -Value "none" -ItemType File -Force | Out-Null
+
+    if (-not (Test-Path $Path)) {
+        Write-Error "No file: $Path"
+        return
+    }
+
+    $absPath = (Resolve-Path $Path).Path
+    $uri = [uri]::new($absPath)
+
+    # Load video metadata
+    [System.Windows.Media.MediaPlayer]$Script:mediaPlayer = [System.Windows.Media.MediaPlayer]::new()
+    [System.Threading.ManualResetEvent]$Script:waiter = [System.Threading.ManualResetEvent]::new($false)
+
+    # Map of event names to their corresponding 'add_' method
+    $eventNames = @(
+        "MediaOpened",
+        "BufferingStarted",
+        "BufferingEnded",
+        "Changed",
+        "MediaEnded",
+        "MediaFailed",
+        "ScriptCommand"
+    )
+
+    foreach ($eventName in $eventNames) {
+        $handler = {
+            param($sender, $args)
+            Set-Content -Path $Script:TmpFile -Value $eventName -Force
+        }
+        $handlerWaiter = {
+            param($sender, $args)
+            Set-Content -Path $Script:TmpFile -Value $eventName -Force
+            if ($Script:waiter -ne $Null) {
+                $Script:waiter.Set() | Out-Null
+            }
+
+        }
+        $delegateType = switch ($eventName) {
+            "MediaFailed" { [System.EventHandler[System.Windows.Media.ExceptionEventArgs]] }
+            "ScriptCommand" { [System.EventHandler[System.Windows.Media.MediaScriptCommandEventArgs]] }
+            default { [System.EventHandler] }
+        }
+
+        $delegate = switch ($eventName) {
+            "MediaOpened" {[Delegate]::CreateDelegate($delegateType, $handlerWaiter.Target, $handlerWaiter.Method)  }
+            default { [Delegate]::CreateDelegate($delegateType, $handler.Target, $handler.Method) }
+        }
+
+        $addMethod = "add_$eventName"
+        $mediaPlayer.$addMethod.Invoke($delegate)
+    }
+    $Script:mediaPlayer.Open($uri)
+
+    $Res = $Script:waiter.WaitOne(3000)
+    $videoWidth = $Width
+    $videoHeight = $Height
+    if ($Res) {
+        $videoWidth = [math]::Ceiling($mediaPlayer.NaturalVideoWidth)
+        $videoHeight = [math]::Ceiling($mediaPlayer.NaturalVideoHeight)
+        if ($videoWidth -le 0 -or $videoHeight -le 0) {
+            Write-Warning "Failed to read video dimensions"
+            $videoWidth = $Width
+            $videoHeight = $Height
+        }
+    }
+
+
+    # Create WPF XAML layout with a MediaElement
+    [string]$layoutWpf = @"
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        Title="{0}" Height="{1}" Width="{2}"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <MediaElement Name="MediaPlayer"
+                      LoadedBehavior="Manual"
+                      UnloadedBehavior="Stop"
+                      Stretch="Uniform"
+                      />
+    </Grid>
+</Window>
+"@ -f $Title, $videoHeight, $videoWidth
+
+    [xml]$xaml = $layoutWpf -as [xml]
+    if (-not ($xaml)) {
+        Write-Error "no layout"
+    }
+
+    # Parse the XAML to get the window object
+    $reader = (New-Object System.Xml.XmlNodeReader $xaml)
+    $window = [Windows.Markup.XamlReader]::Load($reader)
+
+    # Get the MediaElement control
+    $MediaPlayer = $window.FindName("MediaPlayer")
+    if (-not (Test-Path "$Path")) {
+        Write-Errpr "no file $Path"
+    }
+    # Set the video source (replace with your video path)
+    $videoPath = "$Path"
+    $MediaPlayer.Source = [uri]::new($videoPath)
+
+    # Start playing when window is loaded
+    $window.Add_Loaded({
+            $MediaPlayer.Play()
+        })
+
+    # Show the window
+    $window.ShowDialog() | Out-Null
+
+}
+
+function Show-MessageBoxQuestion {
+    [CmdletBinding(SupportsShouldProcess = $true)]
+    param(
+        [Parameter(Mandatory = $True, Position = 0)]
+        [Alias("m")]
+        [string]$Message,
+        [Parameter(Mandatory = $False)]
+        [Alias("t")]
+        [string]$Title = "Question",
+        [Parameter(Mandatory = $False)]
+        [Alias("s")]
+        [ValidateSet('OK', 'OK-Cancel', 'Abort-Retry-Ignore', 'Yes-No-Cancel', 'Play-No-Explorer', 'Yes-No', 'Retry-Cancel', 'Cancel-Continue', 'Cancel-TryAgain-Continue')]
+        [string]$ButtonStyle = "Play-No-Explorer",
+        [Parameter(Mandatory = $false)]
+        [Alias("i")]
+        [switch]$Sound
+    )
+
+    $Params = @{
+        FontFamily = 'Verdana'
+        Title = $Title
+        TitleFontSize = 80
+        TitleTextForeground = 'White'
+        TitleBackground = 'SteelBlue'
+        ButtonType = "$ButtonStyle"
+        ContentFontSize = 16
+        ContentTextForeground = 'White'
+        ContentBackground = 'SteelBlue'
+        ButtonTextForeground = 'White'
+        BorderThickness = 0
+    }
+    if ($Sound) {
+
+    }
+    $RetVal = Show-MessageBox @Params -Content $Message -TitleAlign "left"
+    Write-Verbose "RetVal is $RetVal"
+    $RetVal
+}
+
+
+
 
 function Show-MessageBoxServices {
     <#
@@ -1360,7 +1537,7 @@ function Show-MessageBoxServices {
     .PARAMETER Text
     String to display
 #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param()
     # Get Services
     $Fields = @(
@@ -1368,7 +1545,7 @@ function Show-MessageBoxServices {
         'DisplayName'
         'ServiceName'
     )
-    $ServicesAll = try{Get-Service -EA Stop}catch{}
+    $ServicesAll = try { Get-Service -EA Stop } catch {}
     $Services = $ServicesAll | Select $Fields
 
     # Add Services to a datatable

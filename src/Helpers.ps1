@@ -37,6 +37,24 @@ function Invoke-EnsureSharedScriptFolder {
 }
 
 
+function Get-DirectorySizeFast {
+    [OutputType([UInt64])]
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true, HelpMessage = "LiteralPath")]
+        [ValidateNotNullOrEmpty()]
+        [string]$LiteralPath
+    )
+
+    process {
+        if (-not (Test-Path $LiteralPath -PathType Container)) {
+            throw "Directory not found: $LiteralPath"
+        }
+        $files = Get-ChildItem -LiteralPath $LiteralPath -Recurse -File -Force -ErrorAction SilentlyContinue
+        return ($files | Measure-Object -Property Length -Sum).Sum
+    }
+}
+
 
 
 function Wait-ThinProfileModuleUpdate {
