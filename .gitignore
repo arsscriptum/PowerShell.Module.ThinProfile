@@ -20,4 +20,6 @@ build-tools/generated/
 build-tools/generated/*
 
 OpenAI.API.keyVersion.tmp
-Version.tmp
+Version.tmp# sublime text temporary file pspp
+*.pspp
+
