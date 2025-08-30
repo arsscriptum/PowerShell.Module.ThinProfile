@@ -63,26 +63,51 @@ function New-ThinProfileModuleVersionFile {
         [Parameter(Mandatory = $false)]
         [switch]$Force
     )
-    $ThinProfileVersionPath = Get-ThinProfileModuleVersionPath
-    $JsonPath = (Join-Path $ThinProfileVersionPath "clienttools.json")
+
+    $JsonPath = (Join-Path (Get-ThinProfileModuleVersionPath) "ThinProfile.json")
+    Write-Verbose "[Get-ThinProfileModuleVersionPath] JsonPath $JsonPath"
     $CurrDate = Get-Date -UFormat "%s"
     $ModuleName = (Get-ThinProfileModuleInformation).ModuleName.Name
     $ModuleInstallPath = (Get-ThinProfileModuleInformation).ModuleInstallPath
     $ModulePath = (Get-ThinProfileModuleInformation).ModulePath
 
+
+
     $psm1path = (Join-Path "$ModuleInstallPath" "$ModuleName") + '.psm1'
     $psd1path = (Join-Path "$ModuleInstallPath" "$ModuleName") + '.psd1'
+
+    Write-Verbose "[Get-ThinProfileModuleVersionPath]`n - CurrDate $CurrDate`n - ModuleName $ModuleName`n - ModuleInstallPath $ModuleInstallPath`n - ModulePath $ModulePath`n - psm1path $psm1path`n - psd1path $psd1path"
 
     $ValidFiles = ((Test-Path "$psm1path") -and (Test-Path "$psd1path"))
     if (!$ValidFiles) {
         Write-Error "Missing Module File"
     }
 
+    $GetUpdateUrlCmd = Get-Command -Name "Get-PowerShellModulesUpdateUrl" -CommandType Function -Module "PowerShell.Module.Core" -ErrorAction Ignore
 
-    $UpdateUrl = "https://arsscriptum.github.io/{0}" -f $ModuleName
-    $VersionUrl = "https://arsscriptum.github.io/{0}/{1}" -f $ModuleName, "Version.nfo"
+    $UpdateBaseUrl = "https://arsscriptum.github.io"
+
+    if ($GetUpdateUrlCmd -ne $Null) {
+        $UpdateBaseUrl = Get-PowerShellModulesUpdateUrl
+        Write-Verbose "[Get-ThinProfileModuleVersionPath] Command Get-PowerShellModulesUpdateUrl found in Core. Overriding UpdateURL with $UpdateBaseUrl"
+    }else{
+        Write-Verbose "[Get-ThinProfileModuleVersionPath] UpdateURL defaults to $UpdateBaseUrl"
+    }
+
+    $UpdateUrl = "{0}/{1}" -f $UpdateBaseUrl, $ModuleName
+    $VersionUrl = "{0}/{1}/Version.nfo" -f $UpdateBaseUrl, $ModuleName
     $CurrVersion = Get-ThinProfileModuleVersion
-    if ((!(Test-Path "$JsonPath")) -or ($Force)) {
+    Write-Verbose "[Get-ThinProfileModuleVersionPath]`n - UpdateUrl $UpdateUrl`n - VersionUrl $VersionUrl`n - CurrVersion $CurrVersion`n"
+
+    $ShouldOverwrite = $False
+    $FileExists = (Test-Path "$JsonPath" -PathType Leaf)
+    if ($Force) {
+        $ShouldOverwrite = $True
+    }
+
+    Write-Verbose "[Get-ThinProfileModuleVersionPath] Force $Force . File $JsonPath Exists? $FileExists. ShouldOverwrite $ShouldOverwrite"
+
+    if ((!($FileExists)) -or ($ShouldOverwrite)) {
         [pscustomobject]$o = [pscustomobject]@{
             CurrentVersion = "$CurrVersion"
             LastUpdate = "$CurrDate"
@@ -95,9 +120,10 @@ function New-ThinProfileModuleVersionFile {
         }
         $NewFileJsonData = $o | ConvertTo-Json
         New-Item -Path "$JsonPath" -ItemType File -Force -EA Stop -Value $NewFileJsonData | Out-Null
+        Write-Host "[Get-ThinProfileModuleVersionPath] Wrote $JsonPath"
     }
-
 }
+
 
 
 function Set-ThinProfileAutoUpdateOverride {

@@ -80,7 +80,7 @@ $Script:DocumentationBuildFile = Join-Path "$ENV:Temp" "BuildDoc.ps1"
 $Script:TemplateFilePath = Join-Path $Script:TplPath 'ModuleVersion.tpl'
 $Script:OutputFilePath = Join-Path $Script:SourcePath 'ModuleVersion.ps1'
 $Script:VersionFileTmpPath = Join-Path "$ENV:Temp" 'Version.tmp'
-$Script:DeployTargetPath = (Resolve-Path "$Script:RootPath\..\PowerShell.Module.ThinProfile.Live").Path
+$Script:DeployTargetPath = (Resolve-Path "W:\default\powershell\PowerShell.Module.ThinProfile").Path
 
 
 

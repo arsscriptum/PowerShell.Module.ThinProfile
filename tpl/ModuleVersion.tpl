@@ -8,7 +8,6 @@
 #╚════════════════════════════════════════════════════════════════════════════════╝
 
 
-
 function Get-ThinProfileModuleVersion {
     [CmdletBinding(SupportsShouldProcess)]
     param(
@@ -16,9 +15,12 @@ function Get-ThinProfileModuleVersion {
         [switch]$Latest
     )
 
+
     if($Latest){
+        Write-Verbose "[Get-ThinProfileModuleVersion] Get Latest (Online) $Latest"
+
         $ThinProfileVersionPath = Get-ThinProfileModuleVersionPath
-        $JsonPath = Join-Path $ThinProfileVersionPath "clienttools.json"
+        $JsonPath = Join-Path $ThinProfileVersionPath "ThinProfile.json"
 
         if (!(Test-Path $JsonPath)) {
             Write-Error "module not initialized! no file $JsonPath"
@@ -26,10 +28,17 @@ function Get-ThinProfileModuleVersion {
         }
 
         [version]$CurrVersion = Get-ThinProfileModuleVersion
-
+        Write-Verbose "[Get-ThinProfileModuleVersion] CurrVersion $CurrVersion"
+        Write-Verbose "[Get-ThinProfileModuleVersion] JsonPath $JsonPath"
         $Data = Get-Content $JsonPath | ConvertFrom-Json
+        Write-Verbose "[Get-ThinProfileModuleVersion] JSON DATA`n------`n$Data`n-------`n"
+        
+
         [version]$LatestVersion = Invoke-RestMethod -Uri "$($Data.VersionUrl)"
+        Write-Verbose "[Get-ThinProfileModuleVersion] LatestVersion $($LatestVersion.ToString())"
         return $LatestVersion.ToString()
+    }else{
+        Write-Verbose "[Get-ThinProfileModuleVersion] Get Local Version ___MODULE_VERSION_STRING____ "
     }
 
     $Version = "___MODULE_VERSION_STRING____"
