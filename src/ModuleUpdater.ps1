@@ -189,7 +189,7 @@ function Invoke-ThinProfileAutoUpdate {
         }
 
         $verDir = Get-ThinProfileModuleVersionPath
-        $json = Join-Path $verDir "clienttools.json"
+        $json = Join-Path $verDir "ThinProfile.json"
         if (-not (Test-Path $json)) { New-ThinProfileModuleVersionFile }
 
         $data = Get-Content $json -Raw | ConvertFrom-Json
