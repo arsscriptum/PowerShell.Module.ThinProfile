@@ -15,3 +15,6 @@ New-alias -Name onlogin -Value Invoke-OnLoginFuncs -Force -ErrorAction Ignore | 
 New-alias -Name mouse_no -Value Disable-LocalMouse -Force -ErrorAction Ignore | Out-Null
 New-alias -Name mouse_go -Value Enable-LocalMouse -Force -ErrorAction Ignore | Out-Null
 New-alias -Name mouse_check -Value Get-LocalMouseStatus -Force -ErrorAction Ignore | Out-Null
+
+New-alias -Name ytsave -Value Save-YtVideo -Force -ErrorAction Ignore | Out-Null
+
