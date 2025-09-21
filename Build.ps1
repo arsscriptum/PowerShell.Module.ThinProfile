@@ -80,7 +80,7 @@ $Script:DocumentationBuildFile = Join-Path "$ENV:Temp" "BuildDoc.ps1"
 $Script:TemplateFilePath = Join-Path $Script:TplPath 'ModuleVersion.tpl'
 $Script:OutputFilePath = Join-Path $Script:SourcePath 'ModuleVersion.ps1'
 $Script:VersionFileTmpPath = Join-Path "$ENV:Temp" 'Version.tmp'
-$Script:DeployTargetPath = (Resolve-Path "W:\default\powershell\PowerShell.Module.ThinProfile").Path
+$Script:DeployTargetPath = (Resolve-Path "O:\default\powershell\PowerShell.Module.ThinProfile").Path
 
 
 
@@ -511,7 +511,7 @@ function Get-FunctionDocUrl(`$Name){{
         Remove-Item $Script:VersionFileTmpPath -Force
     }
 
-    if(($ModuleLoaded) -And ($Deploy) ) {
+    if(($ModuleLoaded) -And ($Deploy) -And (Test-Path "$Script:DeployTargetPath")) {
         Write-Host "`n`n===============================================================================" -f DarkRed
         Write-Host "DEPLOY`n" -NoNewline -f DarkYellow;
         Write-Host "===============================================================================" -f DarkRed
@@ -527,7 +527,6 @@ function Get-FunctionDocUrl(`$Name){{
         $srcpsm1path = Join-Path $Script:OutPath "PowerShell.Module.ThinProfile.psm1"
         $srcpsd1Hashpath = Join-Path $Script:OutPath "PowerShell.Module.ThinProfile.psd1.sha256"
         $srcpsm1Hashpath = Join-Path $Script:OutPath "PowerShell.Module.ThinProfile.psm1.sha256"
-
 
         $dstpsd1path = Join-Path $Script:DeployTargetPath "PowerShell.Module.ThinProfile.psd1"
         $dstpsm1path = Join-Path $Script:DeployTargetPath "PowerShell.Module.ThinProfile.psm1"
