@@ -38,10 +38,10 @@ function Get-ThinProfileModuleVersion {
         Write-Verbose "[Get-ThinProfileModuleVersion] LatestVersion $($LatestVersion.ToString())"
         return $LatestVersion.ToString()
     }else{
-        Write-Verbose "[Get-ThinProfileModuleVersion] Get Local Version 1.0.63 "
+        Write-Verbose "[Get-ThinProfileModuleVersion] Get Local Version 1.0.86 "
     }
 
-    $Version = "1.0.63"
+    $Version = "1.0.86"
     return $Version
 }
 
