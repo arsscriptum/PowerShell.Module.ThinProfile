@@ -19,3 +19,4 @@ New-alias -Name ytsave -Value Save-YtVideo -Force -ErrorAction Ignore | Out-Null
 
 New-alias -Name zbookmount -Value Invoke-MountAllZbookShares -Force -ErrorAction Ignore | Out-Null
 
+New-alias -Name ycam -Value Start-YawcamJavaProcess -Force -ErrorAction Ignore | Out-Null
