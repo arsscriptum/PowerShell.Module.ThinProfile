@@ -1,3 +1,14 @@
+#╔════════════════════════════════════════════════════════════════════════════════════╗
+#║                                                                                    ║
+#║   RemoteCommands.ps1                                                               ║
+#║                                                                                    ║
+#╟────────────────────────────────────────────────────────────────────────────────────╢
+#║   Guillaume Plante <codegp@icloud.com>                                             ║
+#║   Code licensed under the GNU GPL v3.0. See the LICENSE file for details.          ║
+#╚════════════════════════════════════════════════════════════════════════════════════╝
+
+
+
 function Invoke-StartNotification {
     [CmdletBinding()]
     param(
@@ -104,7 +115,6 @@ objShell.Run "powershell.exe -ExecutionPolicy Bypass -EncodedCommand $ScriptBase
     }
 }
 
-Invoke-StartNotification
 
 function Start-QueuedCommandProcessor {
     [CmdletBinding(SupportsShouldProcess)]

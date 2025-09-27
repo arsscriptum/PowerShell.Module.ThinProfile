@@ -32,3 +32,4 @@ function Push-ModTools {  Write-Host "Pushd => $env:ModTools" ; Push-location $e
 function Push-ModWindowsHost {  Write-Host "Pushd => $env:ModWindowsHost" ; Push-location $env:ModWindowsHost; }
 function Push-ModZBookHardware {  Write-Host "Pushd => $env:ModZBookHardware" ; Push-location $env:ModZBookHardware; }
 function Push-Modter2K {  Write-Host "Pushd => $env:Modter2K" ; Push-location $env:Modter2K; }
+function Push-VideoPath {  Write-Host "Pushd => $env:Modter2K" ; Push-location $env:Modter2K; }

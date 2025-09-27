@@ -146,7 +146,7 @@ function Update-ModulesShortcuts {
     $AliasDefinitions = [System.Collections.Generic.List[string]]::new()
     $ModuleDevelopmentPath = "C:\Users\$ENV:USERNAME\Documents\PowerShell\Module-Development"
     pushd "$ModuleDevelopmentPath"
-    $mods = (gci -PATH "$ModuleDevelopmentPath" -Directory)
+    $mods = (gci -Path "$ModuleDevelopmentPath" -Directory)
     $modsCount = $mods.Count
     Write-Host -n -f DarkRed "Found $modsCount modules."
     if ($PSBoundParameters.ContainsKey('Filter')) {
@@ -155,7 +155,7 @@ function Update-ModulesShortcuts {
         Write-Host -n -f DarkRed "Filtered with $Filter -> $modsCount modules."
     }
     foreach ($m in $mods) {
-        $name = $m.Name; 
+        $name = $m.Name;
         $shortname = $name.substring(18);
         $fullpath = $m.FullName;
         $envval = "Mod$shortname";
@@ -248,18 +248,31 @@ function Get-CustomPathValues {
     $CustomPaths.Add("moddev", "C:\Users\$ENV:USERNAME\Documents\PowerShell\Module-Development")
     $CustomPaths.Add("MyCode", "c:\Dev")
     $CustomPaths.Add("ProfilePath", "C:\Users\$ENV:USERNAME\Documents\PowerShell\Profile")
+    $CustomPaths.Add("ProfileScripts", "C:\Users\$ENV:USERNAME\scripts")
+    $CustomPaths.Add("ProgramData", "c:\ProgramData")
     $CustomPaths.Add("Sandbox", "c:\Dev\Sandbox")
+    $CustomPaths.Add("SystemScripts", "c:\Scripts")
+    $CustomPaths.Add("SystemPrograms", "c:\Programs")
     $CustomPaths.Add("PowerShellSandbox", "c:\Scripts\Sandbox\WindowsSandbox")
     $CustomPaths.Add("ScriptsSandbox", "c:\Tmp\Sandbox\WindowsSandbox")
     $CustomPaths.Add("CodeSandbox", "c:\Tmp\Sandbox\WindowsSandbox")
     $CustomPaths.Add("WinSandbox", "c:\Tmp\Sandbox\WindowsSandbox")
     $CustomPaths.Add("CodeTemplates", "c:\Dev\templates")
     $CustomPaths.Add("Templates", "c:\Dev\templates")
+    $CustomPaths.Add("LastProject", "c:\Dev\Binary-Vault")
+    $CustomPaths.Add("NOTES", "C:\Users\$ENV:USERNAME\Documents\NOTES")
+    $CustomPaths.Add("TODO", "C:\Users\$ENV:USERNAME\Documents\NOTES\TODO.md")
+    $CustomPaths.Add("ProjectNotes", "C:\Users\$ENV:USERNAME\Documents\NOTES\Projects.md")
+    $CustomPaths.Add("VersionPatcher", "C:\Dev\Native.VersionPatcher\bin\Win32\Release\verpatch.exe")
+    $VideoPath = "C:\Users\gp\Videos"
+    $YtVideosPath = Join-Path "$VideoPath" "YouTube"
+    $RedditVideosPath = Join-Path "$VideoPath" "Reddit"
+
+    $CustomPaths.Add("Videos", "$VideoPath")
+    $CustomPaths.Add("YouTubeVideos", "$YtVideosPath")
+    $CustomPaths.Add("RedditVideos", "$RedditVideosPath")
     return $CustomPaths
-
 }
-
-
 
 
 function Update-WellKnownPaths {
@@ -269,6 +282,17 @@ function Update-WellKnownPaths {
         [switch]$NoProgress
     )
     try {
+
+        $VideoPath = "C:\Users\gp\Videos"
+        $YtVideosPath = Join-Path "$VideoPath" "YouTube"
+        $RedditVideosPath = Join-Path "$VideoPath" "Reddit"
+        if (!([System.IO.Directory]::Exists("$RedditVideos"))) {
+            New-Item -Path "$RedditVideos" -ItemType Directory -Force -EA Ignore | Out-Null
+        }
+        if (!([System.IO.Directory]::Exists("$YtVideosPath"))) {
+            New-Item -Path "$YtVideosPath" -ItemType Directory -Force -EA Ignore | Out-Null
+        }
+
         $FnDefinitions = [System.Collections.Generic.List[string]]::new()
         $AliasDefinitions = [System.Collections.Generic.List[string]]::new()
         $CustomPaths = Get-CustomPathValues
