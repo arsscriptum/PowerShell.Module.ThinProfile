@@ -21,3 +21,6 @@ New-alias -Name zbookmount -Value Invoke-MountAllZbookShares -Force -ErrorAction
 
 New-alias -Name wterm -Value Start-WindowsTerminal -Force -ErrorAction Ignore | Out-Null
 New-alias -Name ycam -Value Start-YawcamJavaProcess -Force -ErrorAction Ignore | Out-Null
+
+New-alias -Name copilot -Value Open-CoPilotDashboard -Force -ErrorAction Ignore | Out-Null
+

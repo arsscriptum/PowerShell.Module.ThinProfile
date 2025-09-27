@@ -126,7 +126,6 @@ function Publish-SettingsUpdated {
 }
 
 
-
 function Update-ModulesShortcuts {
     [CmdletBinding(SupportsShouldProcess)]
     param(
@@ -137,36 +136,43 @@ function Update-ModulesShortcuts {
     )
     $TestOnly = $False
     if (($PSBoundParameters.ContainsKey('WhatIf')) -or ($PSBoundParameters.ContainsKey('Test'))) {
-        Write-Host '[SetEnv] ' -f DarkRed -NoNewline
-        Write-Host "TEST ONLY" -f Yellow
+        Write-Host '[Update-ModulesShortcuts] ' -ForegroundColor DarkRed -NoNewline
+        Write-Host "TEST ONLY" -ForegroundColor Yellow
         $TestOnly = $True
     }
 
     $FnDefinitions = [System.Collections.Generic.List[string]]::new()
     $AliasDefinitions = [System.Collections.Generic.List[string]]::new()
     $ModuleDevelopmentPath = "C:\Users\$ENV:USERNAME\Documents\PowerShell\Module-Development"
+
+    Write-Host "[Update-ModulesShortcuts] Using module development path: $ModuleDevelopmentPath" -ForegroundColor DarkYellow
+
     pushd "$ModuleDevelopmentPath"
-    $mods = (gci -Path "$ModuleDevelopmentPath" -Directory)
+    $mods = (Get-ChildItem -Path "$ModuleDevelopmentPath" -Directory)
     $modsCount = $mods.Count
-    Write-Host -n -f DarkRed "Found $modsCount modules."
+    Write-Host "[Update-ModulesShortcuts] Found $modsCount modules." -ForegroundColor Cyan
+
     if ($PSBoundParameters.ContainsKey('Filter')) {
-        $mods = $mods | Where Name -Match "$Filter"
+        $mods = $mods | Where-Object { $_.Name -match "$Filter" }
         $modsCount = $mods.Count
-        Write-Host -n -f DarkRed "Filtered with $Filter -> $modsCount modules."
+        Write-Host "[Update-ModulesShortcuts] Filtered with '$Filter' -> $modsCount modules." -ForegroundColor Magenta
     }
+
     foreach ($m in $mods) {
-        $name = $m.Name;
-        $shortname = $name.substring(18);
-        $fullpath = $m.FullName;
-        $envval = "Mod$shortname";
-        $log = "Processing Module $name ($fullpath)";
+        $name = $m.Name
+        $shortname = $name.Substring(18)
+        $fullpath = $m.FullName
+        $envval = "Mod$shortname"
+        $log = "Processing Module $name ($fullpath)"
+
         if (-not $TestOnly) {
+            Write-Host "[Update-ModulesShortcuts] Setting env: $envval => $fullpath" -ForegroundColor Blue
             Set-EnvironmentVariable -Name $envval -Value $fullpath -Scope UserSession
-            Write-Host -n -f DarkRed '[SetEnv] '
         } else {
-            Write-Host -n -f Blue '[TEST] '
-        };
-        Write-Host -f DarkYellow $log
+            Write-Host "[Update-ModulesShortcuts] [TEST] Would set env: $envval => $fullpath" -ForegroundColor DarkGray
+        }
+
+        Write-Host "[Update-ModulesShortcuts] $log" -ForegroundColor DarkYellow
 
         $AliasDefinitions.Add("New-Alias $envval -Value `"Push-$envval`" -Description `"Push-location `$env:$envval`" -Scope Global -Force -ErrorAction Stop -Option ReadOnly,AllScope")
         $FnDefinitions.Add("function Push-$envval {  Write-Host `"Pushd => `$env:$envval`" ; Push-location `$env:$envval; }")
@@ -178,13 +184,17 @@ function Update-ModulesShortcuts {
     $ModulesPathFunctions = Join-Path $PrivateScriptsPath "ModulesPathFunctions.ps1"
     $ModulesPathAliases = Join-Path $PrivateScriptsPath "ModulesPathAliases.ps1"
 
+    Write-Host "[Update-ModulesShortcuts] Generating function/alias script files..." -ForegroundColor Magenta
+
     Write-FileHeader -FileName "ModulesPathFunctions.ps1" -Description "Generated PowerShell Script with function to move in module path" | Set-Content -Path $ModulesPathFunctions -Force
     Add-Content -Path $ModulesPathFunctions -Value $FnDefinitions -Force
-    Write-Host "[Update-WellKnownPath] Generated $ModulesPathFunctions"
+    Write-Host "[Update-ModulesShortcuts] Wrote: $ModulesPathFunctions" -ForegroundColor Green
+
     Write-FileHeader -FileName "ModulesPathAliases.ps1" -Description "Generated PowerShell Script with function to move in module path" | Set-Content -Path $ModulesPathAliases -Force
     Add-Content -Path $ModulesPathAliases -Value $AliasDefinitions -Force
-    Write-Host "[Update-WellKnownPath] Generated $ModulesPathAliases"
+    Write-Host "[Update-ModulesShortcuts] Wrote: $ModulesPathAliases" -ForegroundColor Green
 }
+
 
 
 function Get-DocumentsPath {
@@ -274,7 +284,6 @@ function Get-CustomPathValues {
     return $CustomPaths
 }
 
-
 function Update-WellKnownPaths {
     [CmdletBinding(SupportsShouldProcess)]
     param(
@@ -282,29 +291,44 @@ function Update-WellKnownPaths {
         [switch]$NoProgress
     )
     try {
-
         $VideoPath = "C:\Users\gp\Videos"
         $YtVideosPath = Join-Path "$VideoPath" "YouTube"
         $RedditVideosPath = Join-Path "$VideoPath" "Reddit"
-        if (!([System.IO.Directory]::Exists("$RedditVideos"))) {
-            New-Item -Path "$RedditVideos" -ItemType Directory -Force -EA Ignore | Out-Null
+
+        Write-Host "[Update-WellKnownPaths] Checking/creating video paths..." -ForegroundColor Yellow
+
+        if (-not (Test-Path -Path $RedditVideosPath)) {
+            Write-Host "[Update-WellKnownPaths] Creating Reddit video directory: $RedditVideosPath" -ForegroundColor DarkYellow
+            New-Item -Path "$RedditVideosPath" -ItemType Directory -Force -EA Ignore | Out-Null
+        } else {
+            Write-Host "[Update-WellKnownPaths] Reddit video directory exists: $RedditVideosPath" -ForegroundColor Green
         }
-        if (!([System.IO.Directory]::Exists("$YtVideosPath"))) {
+
+        if (-not (Test-Path -Path $YtVideosPath)) {
+            Write-Host "[Update-WellKnownPaths] Creating YouTube video directory: $YtVideosPath" -ForegroundColor DarkYellow
             New-Item -Path "$YtVideosPath" -ItemType Directory -Force -EA Ignore | Out-Null
+        } else {
+            Write-Host "[Update-WellKnownPaths] YouTube video directory exists: $YtVideosPath" -ForegroundColor Green
         }
 
         $FnDefinitions = [System.Collections.Generic.List[string]]::new()
         $AliasDefinitions = [System.Collections.Generic.List[string]]::new()
         $CustomPaths = Get-CustomPathValues
-        $CustomPaths.GetEnumerator() | % {
-            $VarName = $($_.Name);
-            $VarPath = $($_.Value);
-            Write-Host "[Update-WellKnownPath] name: $VarName path: $VarPath"
+
+        Write-Host "[Update-WellKnownPaths] Updating environment variables and aliases..." -ForegroundColor Cyan
+        $CustomPaths.GetEnumerator() | ForEach-Object {
+            $VarName = $_.Name
+            $VarPath = $_.Value
+            Write-Host "[Update-WellKnownPaths] Setting variable: $VarName => $VarPath" -ForegroundColor Blue
             Set-EnvironmentVariable -Name $VarName -Value $VarPath -Scope 'UserSession' | Out-Null
 
             $AliasName = $VarName.ToLower().Replace("templates", "tpl").Replace("root", "").Replace("sandbox", "sb").Replace("directory", "").Replace("development", "dev").Replace("my", "").Replace("powershell", "ps")
-            $AliasDefinitions.Add("New-Alias $AliasName -Value `"Push-$VarName`" -Description `"Push-location `$env:$VarName`" -Scope Global -Force -ErrorAction Stop -Option ReadOnly,AllScope")
-            $FnDefinitions.Add("function Push-$VarName {  Write-Host `"Pushd => `$env:$VarName`" ; Push-location `$env:$VarName; }")
+            $AliasDef = "New-Alias $AliasName -Value `"Push-$VarName`" -Description `"Push-location `$env:$VarName`" -Scope Global -Force -ErrorAction Stop -Option ReadOnly,AllScope"
+            $FnDef = "function Push-$VarName {  Write-Host `"Pushd => `$env:$VarName`" ; Push-location `$env:$VarName; }"
+            Write-Host "[Update-WellKnownPaths] Alias: $AliasName, Function: Push-$VarName" -ForegroundColor DarkCyan
+
+            $AliasDefinitions.Add($AliasDef)
+            $FnDefinitions.Add($FnDef)
         }
 
         $ProfilePath = (Get-Item -Path "$Profile").DirectoryName
@@ -313,14 +337,18 @@ function Update-WellKnownPaths {
         $CustomPathFunctions = Join-Path $PrivateScriptsPath "CustomPathFunctions.ps1"
         $CustomPathAliases = Join-Path $PrivateScriptsPath "CustomPathAliases.ps1"
 
+        Write-Host "[Update-WellKnownPaths] Generating function and alias script files..." -ForegroundColor Magenta
+
         Write-FileHeader -FileName "CustomPathFunctions.ps1" -Description "Generated PowerShell Script with function to move in custom path" | Set-Content -Path $CustomPathFunctions -Force
         Add-Content -Path $CustomPathFunctions -Value $FnDefinitions -Force
-        Write-Host "[Update-WellKnownPath] Generated $CustomPathFunctions"
+        Write-Host "[Update-WellKnownPaths] Wrote: $CustomPathFunctions" -ForegroundColor Green
+
         Write-FileHeader -FileName "CustomPathAliases.ps1" -Description "Generated PowerShell Script with function to move in custom path" | Set-Content -Path $CustomPathAliases -Force
         Add-Content -Path $CustomPathAliases -Value $AliasDefinitions -Force
-        Write-Host "[Update-WellKnownPath] Generated $CustomPathAliases"
+        Write-Host "[Update-WellKnownPaths] Wrote: $CustomPathAliases" -ForegroundColor Green
+
     } catch {
+        Write-Host "[Update-WellKnownPaths] ERROR: $_" -ForegroundColor Red
         Write-Error "$_"
     }
 }
-
