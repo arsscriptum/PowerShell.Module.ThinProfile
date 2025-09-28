@@ -274,7 +274,16 @@ function Get-CustomPathValues {
     $CustomPaths.Add("TODO", "C:\Users\$ENV:USERNAME\Documents\NOTES\TODO.md")
     $CustomPaths.Add("ProjectNotes", "C:\Users\$ENV:USERNAME\Documents\NOTES\Projects.md")
     $CustomPaths.Add("VersionPatcher", "C:\Dev\Native.VersionPatcher\bin\Win32\Release\verpatch.exe")
-    $VideoPath = "C:\Users\gp\Videos"
+    $CustomPaths.Add("MyDownloads", "C:\Users\$ENV:USERNAME\Downloads")
+    $CustomPaths.Add("MyResources", "$ENV:Resources")
+    $CustomPaths.Add("Burn", "$ENV:CDBurning")
+    $CustomPaths.Add("MyFonts", "$ENV:Fonts")
+    $CustomPaths.Add("MyCookies", "$ENV:Cookies")
+    $CustomPaths.Add("MyHistory", "$ENV:History")
+    $CustomPaths.Add("NetLinks", "$ENV:NetworkShortcuts")
+    $CustomPaths.Add("StartupPath", "$ENV:Startup")
+    
+    $VideoPath = "C:\Users\$ENV:USERNAME\Videos"
     $YtVideosPath = Join-Path "$VideoPath" "YouTube"
     $RedditVideosPath = Join-Path "$VideoPath" "Reddit"
 
@@ -291,7 +300,7 @@ function Update-WellKnownPaths {
         [switch]$NoProgress
     )
     try {
-        $VideoPath = "C:\Users\gp\Videos"
+        $VideoPath = "C:\Users\$ENV:USERNAME\Videos"
         $YtVideosPath = Join-Path "$VideoPath" "YouTube"
         $RedditVideosPath = Join-Path "$VideoPath" "Reddit"
 
