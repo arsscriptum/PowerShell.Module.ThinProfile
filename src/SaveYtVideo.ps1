@@ -70,7 +70,8 @@ function Start-YtDlpProcess {
         [Parameter(Position = 1, Mandatory = $False)]
         [string]$String,
         [Parameter(Mandatory = $False)]
-        [switch]$WriteOutput
+        [Alias('d')]
+        [switch]$DumpOutput
     )
     try {
         $TmpDir = (New-TemporaryDirectory).FullName
@@ -118,14 +119,14 @@ function Start-YtDlpProcess {
         Write-Host "$tsstr" -f White
         if ($Success) {
             Write-Host "[$String] Done Successfully!" -f DarkGreen
-            if ($WriteOutput) {
+            if ($DumpOutput) {
                 $outstr = Get-Content $stdout -Raw
                 Write-Host "$outstr" -f DarkGreen
             }
 
         } else {
             Write-Host "[$String] Error Occured $ExitCode" -f DarkRed
-            if ($WriteOutput) {
+            if ($DumpOutput) {
                 $outstr = Get-Content $stdout -Raw
                 Write-Host "$outstr" -f DarkGreen
                 $outstr = Get-Content $stderr -Raw
@@ -171,7 +172,7 @@ function Save-YtVideo {
             [void]$ccdefault.Add("$DefaultFormat")
             [void]$ccdefault.Add($goodUrl)
 
-            $s = Start-YtDlpProcess $ccdefault "$DefaultFormat"
+            $s = Start-YtDlpProcess $ccdefault "$DefaultFormat" -d
             if ($s -eq $False) {
                 $Basename = Join-Path "$ENV:YouTubeVideos" "$filename"
                 $AudioPath = "$Basename" + ".m4a"
@@ -202,8 +203,8 @@ function Save-YtVideo {
                 [void]$cca.Add("$AudioPath")
                 [void]$cca.Add($goodUrl)
 
-                $sv = Start-YtDlpProcess $ccv "137 VIDEO ONLY"
-                $sa = Start-YtDlpProcess $cca "140 AUDIO ONLY"
+                $sv = Start-YtDlpProcess $ccv "137 VIDEO ONLY" -d
+                $sa = Start-YtDlpProcess $cca "140 AUDIO ONLY" -d
                 if ($sv -and $sa) {
                     Merge-VideoAudio "$VideoPath" "$AudioPath" -OutPath "$MergedVideoPath"
 
