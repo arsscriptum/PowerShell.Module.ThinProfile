@@ -53,7 +53,7 @@ function Convert-YouTubeShortsUrl {
         if ([string]::IsNullOrWhiteSpace($videoId)) {
             throw "Invalid YouTube Shorts URL: missing video id. Url: $Url"
         }
-        if ($videoId.Length -ne 11 -or ($videoId -notmatch '^[A-Za-z0-9]{11}$')) {
+        if ($videoId.Length -ne 11 -or ($videoId -notmatch '^[A-Za-z0-9_]{11}$')) {
             throw "Invalid YouTube video id '$videoId' (must be 11 alphanumeric)."
         }
 

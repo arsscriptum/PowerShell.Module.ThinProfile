@@ -247,6 +247,9 @@ function Get-CustomPathValues {
     $DocumentsPath = Get-DocumentsPath
     $CustomPaths = [ordered]@{}
     $CustomPaths.Add("MyDocuments", "$DocumentsPath")
+    $CustomPaths.Add("docs", "$DocumentsPath")
+    $CustomPaths.Add("data", "c:\Data")
+    $CustomPaths.Add("Vaults", "c:\Data")
     $CustomPaths.Add("DejaToolsRootDirectory", "c:\Dev\DejaInsight")
     $CustomPaths.Add("DevelopmentRoot", "c:\Dev")
     $CustomPaths.Add("ScriptsRoot", "c:\Scripts")

@@ -163,13 +163,17 @@ function Save-YtVideo {
             [uri]$uri_u = $goodUrl
             $filename = Get-FilenameFromUrl $goodUrl
             [System.Collections.ArrayList]$ccdefault = [System.Collections.ArrayList]::new()
+            [void]$ccdefault.Add("-P")
+            [void]$ccdefault.Add("`"$ENV:YouTubeVideos`"")
+            [void]$ccdefault.Add("--print")
+            [void]$ccdefault.Add("after_move:filepath")
             [void]$ccdefault.Add("-f")
             [void]$ccdefault.Add("$DefaultFormat")
             [void]$ccdefault.Add($goodUrl)
 
             $s = Start-YtDlpProcess $ccdefault "$DefaultFormat"
             if ($s -eq $False) {
-                $Basename = Join-Path "$($PWD.Path)" "$filename"
+                $Basename = Join-Path "$ENV:YouTubeVideos" "$filename"
                 $AudioPath = "$Basename" + ".m4a"
                 $AudioPath = Get-UniqueFileName $AudioPath
                 $VideoPath = "$Basename" + ".mp4"
@@ -181,6 +185,8 @@ function Save-YtVideo {
                 $vfmt = $res.VideoFormat
                 $afmt = $res.AudioFormat
                 [System.Collections.ArrayList]$ccv = [System.Collections.ArrayList]::new()
+                [void]$ccv.Add("--print")
+                [void]$ccv.Add("after_move:filepath")
                 [void]$ccv.Add("-f")
                 [void]$ccv.Add("$vfmt")
                 [void]$ccv.Add("-o")
@@ -188,6 +194,8 @@ function Save-YtVideo {
                 [void]$ccv.Add($goodUrl)
 
                 [System.Collections.ArrayList]$cca = [System.Collections.ArrayList]::new()
+                [void]$cca.Add("--print")
+                [void]$cca.Add("after_move:filepath")
                 [void]$cca.Add("-f")
                 [void]$cca.Add("$afmt")
                 [void]$cca.Add("-o")
