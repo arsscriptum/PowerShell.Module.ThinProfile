@@ -1,8 +1,14 @@
-
-
-
-
-
+#╔════════════════════════════════════════════════════════════════════════════════╗
+#║                                                                                ║
+#║   WinNotification.ps1                                                       ║
+#║                                                                                ║
+#╟────────────────────────────────────────────────────────────────────────────────╢
+#║   Written by Guillaume Plante <guillaumeplante@eaton.com>                      ║
+#║                                                                                ║
+#║   Copyright (C) 2025 Eaton Corporation. All rights reserved                    ║
+#║   This file and its contents are proprietary and confidential.                 ║
+#║   Unauthorized copying or distribution is prohibited.                          ║
+#╚════════════════════════════════════════════════════════════════════════════════╝
 function Read-TaskNotifyLogFile {
     [CmdletBinding(SupportsShouldProcess)]
     param()

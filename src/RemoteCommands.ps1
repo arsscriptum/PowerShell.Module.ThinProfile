@@ -1,14 +1,14 @@
-#╔════════════════════════════════════════════════════════════════════════════════════╗
-#║                                                                                    ║
-#║   RemoteCommands.ps1                                                               ║
-#║                                                                                    ║
-#╟────────────────────────────────────────────────────────────────────────────────────╢
-#║   Guillaume Plante <codegp@icloud.com>                                             ║
-#║   Code licensed under the GNU GPL v3.0. See the LICENSE file for details.          ║
-#╚════════════════════════════════════════════════════════════════════════════════════╝
-
-
-
+#╔════════════════════════════════════════════════════════════════════════════════╗
+#║                                                                                ║
+#║   RemoteCommands.ps1                                                        ║
+#║                                                                                ║
+#╟────────────────────────────────────────────────────────────────────────────────╢
+#║   Written by Guillaume Plante <guillaumeplante@eaton.com>                      ║
+#║                                                                                ║
+#║   Copyright (C) 2025 Eaton Corporation. All rights reserved                    ║
+#║   This file and its contents are proprietary and confidential.                 ║
+#║   Unauthorized copying or distribution is prohibited.                          ║
+#╚════════════════════════════════════════════════════════════════════════════════╝
 function Invoke-StartNotification {
     [CmdletBinding()]
     param(

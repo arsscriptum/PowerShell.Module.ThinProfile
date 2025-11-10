@@ -1,11 +1,13 @@
 #╔════════════════════════════════════════════════════════════════════════════════╗
 #║                                                                                ║
-#║   ModulesPathAliases.ps1                                                       ║
-#║   Generated PowerShell Script with function to move in module path             ║
+#║   ModulesPathAliases.ps1                                                    ║
 #║                                                                                ║
 #╟────────────────────────────────────────────────────────────────────────────────╢
-#║   Guillaume Plante <codegp@icloud.com>                                         ║
-#║   Code licensed under the GNU GPL v3.0. See the LICENSE file for details.      ║
+#║   Written by Guillaume Plante <guillaumeplante@eaton.com>                      ║
+#║                                                                                ║
+#║   Copyright (C) 2025 Eaton Corporation. All rights reserved                    ║
+#║   This file and its contents are proprietary and confidential.                 ║
+#║   Unauthorized copying or distribution is prohibited.                          ║
 #╚════════════════════════════════════════════════════════════════════════════════╝
 New-Alias ModAssert -Value "Push-ModAssert" -Description "Push-location $env:ModAssert" -Scope Global -Force -ErrorAction Stop -Option ReadOnly,AllScope
 New-Alias ModClientTools -Value "Push-ModClientTools" -Description "Push-location $env:ModClientTools" -Scope Global -Force -ErrorAction Stop -Option ReadOnly,AllScope
