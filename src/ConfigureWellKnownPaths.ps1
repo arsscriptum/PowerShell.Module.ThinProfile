@@ -1,12 +1,15 @@
-﻿#╔════════════════════════════════════════════════════════════════════════════════╗
-#║                                                                                ║
-#║   ConfigureWellKnownPaths.ps1                                                  ║
-#║                                                                                ║
-#╟────────────────────────────────────────────────────────────────────────────────╢
-#║   Guillaume Plante <codegp@icloud.com>                                         ║
-#║   Code licensed under the GNU GPL v3.0. See the LICENSE file for details.      ║
-#╚════════════════════════════════════════════════════════════════════════════════╝
-
+﻿
+#+--------------------------------------------------------------------------------+
+#|                                                                                |
+#|   ConfigureWellKnownPaths.ps1                                                  |
+#|                                                                                |
+#+--------------------------------------------------------------------------------+
+#|   Written by Guillaume Plante <guillaumeplante@eaton.com>                      |
+#|                                                                                |
+#|   Copyright © Eaton Corporation 2025. All rights reserved                      |
+#|   This file and its contents are proprietary and confidential.                 |
+#|   Unauthorized copying or distribution is prohibited.                          |
+#+--------------------------------------------------------------------------------+
 
 
 function Set-EnvironmentVariable {
@@ -123,6 +126,18 @@ function Publish-SettingsUpdated {
         & "$cmdFile"
     }
     Publish-RegistryChanges
+}
+
+function Publish-NewEnvironmentVariables {
+    [System.Environment]::SetEnvironmentVariable("VAULT", "C:\NETDRV\OneDrive - Eaton\Documents\Secure.Vault", [System.EnvironmentVariableTarget]::User)
+    [System.Environment]::SetEnvironmentVariable("DEVEATON", "C:\Dev\EATON", [System.EnvironmentVariableTarget]::User)
+    [System.Environment]::SetEnvironmentVariable("BUILTIT", "C:\Dev\EATON\smp-buildit-all", [System.EnvironmentVariableTarget]::User)
+    [System.Environment]::SetEnvironmentVariable("DEVSMP", "C:\Dev\EATON\smp-buildit-all\submodules\smp-softandtools", [System.EnvironmentVariableTarget]::User)
+    [System.Environment]::SetEnvironmentVariable("VAULT", "C:\NETDRV\OneDrive - Eaton\Documents\Secure.Vault", [System.EnvironmentVariableTarget]::Process)
+    [System.Environment]::SetEnvironmentVariable("DEVEATON", "C:\Dev\EATON", [System.EnvironmentVariableTarget]::Process)
+    [System.Environment]::SetEnvironmentVariable("BUILTIT", "C:\Dev\EATON\smp-buildit-all", [System.EnvironmentVariableTarget]::Process)
+    [System.Environment]::SetEnvironmentVariable("DEVSMP", "C:\Dev\EATON\smp-buildit-all\submodules\smp-softandtools", [System.EnvironmentVariableTarget]::Process)
+
 }
 
 
@@ -249,14 +264,14 @@ function Get-CustomPathValues {
     $CustomPaths.Add("MyDocuments", "$DocumentsPath")
     $CustomPaths.Add("docs", "$DocumentsPath")
     $CustomPaths.Add("data", "c:\Data")
-    $CustomPaths.Add("Vaults", "c:\Data")
+    $CustomPaths.Add("Vaults", "C:\NETDRV\OneDrive - Eaton\Documents\Secure.Vault")
     $CustomPaths.Add("DejaToolsRootDirectory", "c:\Dev\DejaInsight")
     $CustomPaths.Add("DevelopmentRoot", "c:\Dev")
+    $CustomPaths.Add("DevelopmentEatonRoot", "c:\Dev\EATON")
+    $CustomPaths.Add("DEVEATON", "c:\Dev\EATON")
     $CustomPaths.Add("ScriptsRoot", "c:\Scripts")
     $CustomPaths.Add("ToolsRoot", "c:\Programs\SystemTools")
     $CustomPaths.Add("wwwroot", "c:\www")
-    $CustomPaths.Add("wwwroot2", "c:\www")
-    $CustomPaths.Add("siteroot", "c:\www\arsscriptum.github.io")
     $CustomPaths.Add("RedditSupport", "c:\Scripts\PowerShell.RedditSupport")
     $CustomPaths.Add("moddev", "C:\Users\$ENV:USERNAME\Documents\PowerShell\Module-Development")
     $CustomPaths.Add("MyCode", "c:\Dev")
@@ -267,9 +282,6 @@ function Get-CustomPathValues {
     $CustomPaths.Add("SystemScripts", "c:\Scripts")
     $CustomPaths.Add("SystemPrograms", "c:\Programs")
     $CustomPaths.Add("PowerShellSandbox", "c:\Scripts\Sandbox\WindowsSandbox")
-    $CustomPaths.Add("ScriptsSandbox", "c:\Tmp\Sandbox\WindowsSandbox")
-    $CustomPaths.Add("CodeSandbox", "c:\Tmp\Sandbox\WindowsSandbox")
-    $CustomPaths.Add("WinSandbox", "c:\Tmp\Sandbox\WindowsSandbox")
     $CustomPaths.Add("CodeTemplates", "c:\Dev\templates")
     $CustomPaths.Add("Templates", "c:\Dev\templates")
     $CustomPaths.Add("LastProject", "c:\Dev\Binary-Vault")
