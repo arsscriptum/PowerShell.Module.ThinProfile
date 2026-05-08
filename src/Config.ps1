@@ -153,6 +153,16 @@ function Test-ThinProfileModuleConfig {
     Write-Host "---------------------------------------------------------------------" -f DarkRed
 }
 
+function Get-ExportsPath { 
+    [CmdletBinding(SupportsShouldProcess)]
+    param ()
+   
+    $ExportsPath = Join-Path "$((Get-ThinProfileModuleInformation).ModuleInstallPath)" "exports"
+
+    return $ExportsPath
+}
+
+
 function Get-ThinProfileModuleRegistryPath { 
     [CmdletBinding(SupportsShouldProcess)]
     param ()

@@ -236,3 +236,119 @@ $pdfText
 
 
 New-alias -Name pdf2md -Value Convert-TechNotePdfToMarkdownEnterprise -Force -ErrorAction Ignore -Scope GLobal -Option AllScope
+
+function Convert-JsonToRdp {
+<#
+.SYNOPSIS
+    Converts a JSON-based RDP connection profile into a valid .rdp file.
+
+.DESCRIPTION
+    This function reads a RDP connection profile expressed as JSON and
+    generates a standard Remote Desktop (.rdp) file.
+
+    It performs no credential handling.
+    Authentication is expected to be managed separately via
+    Windows Credential Manager (cmdkey).
+
+.PARAMETER JsonProfilePath
+    Path to the JSON profile file.
+
+.PARAMETER OutputRdpPath
+    Path where the .rdp file will be written.
+
+.NOTES
+    - JSON must only contain RDP configuration values
+    - Ordering is preserved for readability (not required by RDP)
+#>
+
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory)]
+        [string] $JsonProfilePath,
+
+        [Parameter(Mandatory)]
+        [string] $OutputRdpPath
+    )
+
+    if (-not (Test-Path $JsonProfilePath)) {
+        throw "JSON profile not found: $JsonProfilePath"
+    }
+
+    $profile = Get-Content $JsonProfilePath -Raw | ConvertFrom-Json
+
+    $lines = foreach ($prop in $profile.PSObject.Properties) {
+        "$($prop.Name.Replace('_',' ')):$($prop.Value)"
+    }
+
+    Set-Content `
+        -Path $OutputRdpPath `
+        -Value $lines `
+        -Encoding ASCII
+}
+
+function Connect-VMFromProfile {
+<#
+.SYNOPSIS
+    Builds an RDP file from a JSON profile and connects using stored credentials.
+
+.DESCRIPTION
+    - Reads JSON RDP config from $ENV:VM_CONNECT_PROFILE
+    - Generates a temporary .rdp file
+    - Injects credentials from Get-AppCredentials
+    - Launches mstsc with no prompt when permitted
+
+    Credentials are stored securely using Credential Manager.
+#>
+
+    [CmdletBinding()]
+    param ()
+
+    $MsTscCmd = Get-Command -Name 'mstsc.exe' -CommandType Application -ErrorAction Ignore
+    if (-not $MsTscCmd) {
+        throw "mstsc.exe not in path!"
+    }
+    $MsTscExe = $MsTscCmd.Path
+
+    $cmdkeyCmd = Get-Command -Name 'cmdkey.exe' -CommandType Application -ErrorAction Ignore
+    if (-not $MsTscCmd) {
+        throw "cmdkey.exe not in path!"
+    }
+    $cmdkeyExe = $cmdkeyCmd.Path
+
+    if (-not $ENV:VM_CONNECT_PROFILE) {
+        throw "ENV:VM_CONNECT_PROFILE is not set."
+    }
+
+    if (-not $ENV:VM_CREDENTIALS_ID) {
+        throw "ENV:VM_CREDENTIALS_ID is not set."
+    }
+
+    $rdpPath = [System.IO.Path]::ChangeExtension(((New-TemporaryFile).Fullname),".rdp")
+
+    Convert-JsonToRdp -JsonProfilePath "$ENV:VM_CONNECT_PROFILE" -OutputRdpPath "$rdpPath"
+
+    $Creds = Get-AppCredentials "$ENV:VM_CREDENTIALS_ID"
+
+    $VmHostname = (Get-Content "$rdpPath" | Where-Object { $_ -like "full address:*" }) -replace 'full address:s:', ''
+    $opt0 = "/list:TERMSRV/{0}" -f $VmHostname
+    $opt1 = "/generic:TERMSRV/{0}" -f $VmHostname
+    $opt2 = "/user:{0}" -f $Creds.UserName
+    $opt3 = "/pass:{0}" -f $Creds.GetNetworkCredential().Password
+    [string[]]$Res = &"$cmdkeyExe" "$opt0"
+    if($Res -match 'admin') {
+        Write-Host "Credentials Already Stored for $opt1" -f DarkGreen
+    } else {
+        Write-Host "Registering Credentials for $opt1 ... " -f DarkYellow -n
+        Write-Verbose "`"$cmdkeyExe`" `"$opt1`" `"$opt2`" `"$opt3`""
+        &"$cmdkeyExe" "$opt1" "$opt2" "$opt3" | Out-Null
+        [string[]]$Res = &"$cmdkeyExe" "$opt0"
+        if($Res -match 'admin') { 
+            Write-Host "OK" -f DarkGreen
+        } else {
+            Write-Host "Failed" -f DarkRed
+        }
+    }
+
+    Start-Process -FilePath "$MsTscExe" -ArgumentList "`"$rdpPath`""
+}
+New-alias -Name vm -Value Connect-VMFromProfile -Force -ErrorAction Ignore -Scope GLobal -Option AllScope

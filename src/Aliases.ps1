@@ -22,7 +22,7 @@ New-alias -Name ytsave -Value Save-YtVideo -Force -ErrorAction Ignore | Out-Null
 New-alias -Name zbookmount -Value Invoke-MountAllZbookShares -Force -ErrorAction Ignore | Out-Null
 
 New-alias -Name wterm -Value Start-WindowsTerminal -Force -ErrorAction Ignore | Out-Null
-New-alias -Name ycam -Value Start-YawcamJavaProcess -Force -ErrorAction Ignore | Out-Null
+New-alias -Name vsc -Value Start-VsCode -Force -ErrorAction Ignore | Out-Null
 
 New-alias -Name copilot -Value Open-CoPilotDashboard -Force -ErrorAction Ignore | Out-Null
 

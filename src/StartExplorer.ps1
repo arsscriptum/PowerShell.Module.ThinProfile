@@ -97,6 +97,10 @@ function Start-DownloadBrowser {
     }
 }
 
-New-alias -Name goto-download -Value Start-DownloadBrowser -Force -ErrorAction Ignore -Scope GLobal -Option AllScope
-New-alias -Name downloaddir -Value Start-DownloadBrowser -Force -ErrorAction Ignore -Scope GLobal -Option AllScope
-New-alias -Name x -Value Start-Explorer -Force -ErrorAction Ignore -Scope GLobal -Option AllScope
+try{
+    New-alias -Name dldir -Value Start-DownloadBrowser -Force -ErrorAction Stop -Scope GLobal
+    New-alias -Name x -Value Start-Explorer -Force -ErrorAction Stop -Scope GLobal
+} catch {
+    Write-Host -n "[Set Aliases] " -f DarkRed  
+    Write-Host "$_" -f DarkYellow
+}

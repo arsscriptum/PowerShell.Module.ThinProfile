@@ -259,7 +259,7 @@ function Get-CustomPathValues {
     $CustomPaths.Add("siteroot", "c:\www\arsscriptum.github.io")
     $CustomPaths.Add("RedditSupport", "c:\Scripts\PowerShell.RedditSupport")
     $CustomPaths.Add("moddev", "C:\Users\$ENV:USERNAME\Documents\PowerShell\Module-Development")
-    $CustomPaths.Add("MyCode", "c:\Dev")
+    $CustomPaths.Add("MyCopilot", "c:\Dev\github-copilot-data-files")
     $CustomPaths.Add("ProfilePath", "C:\Users\$ENV:USERNAME\Documents\PowerShell\Profile")
     $CustomPaths.Add("ProfileScripts", "C:\Users\$ENV:USERNAME\scripts")
     $CustomPaths.Add("ProgramData", "c:\ProgramData")
